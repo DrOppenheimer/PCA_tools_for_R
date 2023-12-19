@@ -1,17 +1,11 @@
 # Load the plotly library
 library(plotly)
-
-# Generate sample data
-x <- rnorm(100)
-y <- rnorm(100)
-z <- rnorm(100)
-
+library(scatterplot3d)
 
 setwd("~/Documents/GitHub/PCA_tools_for_R/")
 
 
 
-## Workflow
 
 # WORKFLOW ----------------------------------------------------------------
 
@@ -24,17 +18,26 @@ my_metadata <- load_metadata("HMP_jumpstart_metadata.txt")
 
 # select a single column of metadata for color generation
 column_name = "env_package.data.body_site"
+#column_name = "mixs.seq_method"
+#column_name = "library.data.seq_center"
 metadata_column = metadata_matrix[,column_name, drop=FALSE]
 # generate colors for selected column
 metadata_colors <- create_colors(metadata_column)
 
 # generate the interactive 3d plot
-plot_colored_3d_pcoa(
+plot_interactive_colored_3d_pcoa(
     pcoa_data = my_test_pcoa,
     selected_eigen_vectors = c(1,2,3),
     my_metadata_colors = metadata_colors
 )
 
+# iterate through the metadata creating a static 3d plot for each metadata column
+plot_static_colored_3d_pcoas(
+    pcoa_filename = "HMP.Jumpstart.DESeq_normed.euclidean.PCoA",
+    selected_eigen_vectors = c(1,2,3),
+    metadata_filename = "HMP_jumpstart_metadata.txt",
+    debug = TRUE
+)
 
 
 
@@ -42,27 +45,6 @@ plot_colored_3d_pcoa(
 ####################################
 
 # FUNCTIONS ---------------------------------------------------------------
-
-
-
-plot_ly(
-  x = my_test[["eigen_vectors"]][,1], 
-  y = my_test[["eigen_vectors"]][,2], 
-  z = my_test[["eigen_vectors"]][,3], 
-  type = "scatter3d", 
-  mode = "markers",
-  marker = list(color = metadata_colors[,1])) %>%
-  #marker = list(color = "red")) %>%
-  layout(
-    title = "Interactive 3D Scatter Plot", 
-    scene = list(xaxis = list(title = "X Axis"),
-                 yaxis = list(title = "Y Axis"),
-                 zaxis = list(title = "Z Axis"))
-  )
-
-
-
-### Functions
 
 # Import PCoA
 ## ######################
@@ -173,7 +155,7 @@ create_colors <- function(metadata_column, color_mode = "auto"){ # function to
 ## # SUB(4): FUNCTION TO GENERATE THE INTERACTIVE 3D PLOT 
 ## ######################
 # Create an interactive 3D scatter plot using the selected_eigen_vectors and metadata_colors
-plot_colored_3d_pcoa <- function(
+plot_interactive_colored_3d_pcoa <- function(
     pcoa_data = my_test_pcoa,
     selected_eigen_vectors = c(1,2,3),
     my_metadata_colors = metadata_colors
@@ -193,6 +175,178 @@ plot_colored_3d_pcoa <- function(
     )
 }
 
+
+
+## ######################
+## # SUB(5): FUNCTION TO GENERATE STATIC 3D PLOTS FROM ALL OF THE METADATA 
+## ######################
+######################
+# SUB(1): Workhorse function that creates the 3d plot
+######################
+plot_static_colored_3d_pcoas <- function(
+  pcoa_filename = my_test_pcoa,
+  selected_eigen_vectors = c(1,2,3),
+  metadata_filename = my_test_metadata,
+  debug = TRUE
+){
+  
+  # import the calculated PCoA
+  pcoa_data <- load_pcoa_data(pcoa_filename)
+  
+  # import metadata
+  my_metadata <- load_metadata(metadata_filename)
+  
+  # iterate through the metadata
+  # create plot and color it automatically
+  for (i in 1:ncol(my_metadata)){
+    
+    metadata_column_name <- colnames(my_metadata)[i]
+    metadata_column = my_metadata[,metadata_column_name, drop=FALSE]
+    my_output_png_filename <- paste(pcoa_filename, ".", metadata_column_name, ".png", sep = "")
+    print(metadata_column_name)
+    column_color = create_colors(metadata_column)
+    if(debug==TRUE){ print(paste(dim(column_color))); testies <<- column_color }
+    
+    png(
+      filename=my_output_png_filename, 
+      width = 8, 
+      height = 8, 
+      units = "in", 
+      res = 300) # 300 dpi
+      scatterplot3d(
+        x = pcoa_data[["eigen_vectors"]][,selected_eigen_vectors[1]], 
+        y = pcoa_data[["eigen_vectors"]][,selected_eigen_vectors[2]], 
+        z = pcoa_data[["eigen_vectors"]][,selected_eigen_vectors[3]], 
+        color = column_color[,1], 
+        pch = 19, 
+        main = metadata_column_name,
+        xlab = paste("xPC_",selected_eigen_vectors[1]), 
+        ylab = paste("yPC_",selected_eigen_vectors[2]), 
+        zlab = paste("zPC_",selected_eigen_vectors[3]))
+    dev.off()
+  
+  }
+  
+}
+  
+   
+  
+    
+  
+}
+
+#pdf("plot_high_res.pdf", width = 8, height = 8)
+#scatterplot3d(x, y, z, color = "blue", pch = 19, xlab = "X Axis", ylab = "Y Axis", zlab = "Z Axis")
+#dev.off()
+
+
+
+
+# select a single column of metadata for color generation
+column_name = "env_package.data.body_site"
+#column_name = "mixs.seq_method"
+#column_name = "library.data.seq_center"
+metadata_column = metadata_matrix[,column_name, drop=FALSE]
+# generate colors for selected column
+metadata_colors <- create_colors(metadata_column)
+
+
+
+
+
+
+
+
+
+
+
+
+create_plot <- function(
+    PCoA_in,
+    ncol.color_matrix,
+    eigen_values, eigen_vectors, 
+    components, 
+    plot_samples,
+    column_levels, num_levels, color_levels, 
+    pcoa_colors, 
+    plot_pch, pch_labels, pch_levels,
+    image_out,
+    figure_main,
+    image_width_in, image_height_in, image_res_dpi,
+    width_legend, 
+    width_figure,
+    title_cex, legend_cex, figure_cex, figure_symbol_cex, bar_cex, 
+    bar_vert_adjust, label_points, vert_line, 
+    debug
+){
+  
+  if(debug==TRUE){print("creating figure")}
+  
+  png( # initialize the png 
+    filename = image_out,
+    width = image_width_in,
+    height = image_height_in,
+    res = image_res_dpi,
+    units = 'in'
+  )
+  
+  # LAYOUT CREATION HAS TO BE DICTATED BY PCH TO A DEGREE _ NUM LEVELS (1 or more)
+  # Determine num levels for pch
+  num_pch <- length(levels(as.factor(plot_pch)))
+  # CREATE THE LAYOUT
+  if ( num_pch > 1 ){
+    my_layout <- layout( matrix(c(1,1,2,3,4,3,5,5), 4, 2, byrow=TRUE ), widths=c(0.5,0.5), heights=c(0.1,0.8,0.3,0.1) )
+  }else{
+    my_layout <- layout(  matrix(c(1,1,2,3,4,4), 3, 2, byrow=TRUE ), widths=c(width_legend,width_figure), heights=c(0.1,0.8,0.1) )
+    # requires an extra plot.new() to skip over pch legend (frame 4 or none )
+  }
+  # my_layout <- layout(  matrix(c(1,1,2,3,4,3,5,5), 4, 2, byrow=TRUE ), widths=c(width_legend,width_figure), heights=c(0.1,0.4,0.8,0.4,0.1) ) # for auto pch legend
+  layout.show(my_layout)
+  
+  # PLOT THE TITLE (layout frame 1)
+  par( mai = c(0,0,0,0) )
+  par( oma = c(0,0,0,0) )
+  plot.new()
+  if ( identical(title_cex, "default") ){ # automatically scale cex for the legend
+    if(debug==TRUE){print("autoscaling the title cex")}
+    title_par <- par_fetch()
+    title_cex <- calculate_cex(figure_main, title_par$my_pin, title_par$my_mai, reduce_by=0.10)
+  }
+  text(x=0.5, y=0.5, figure_main, cex=title_cex)
+  
+  # PLOT THE LEGEND (layout frame 2)
+  plot.new()
+  if ( identical(legend_cex, "default") ){ # automatically scale cex for the legend
+    if(debug==TRUE){print("autoscaling the legend cex")}
+    legend_par <- par_fetch()
+    legend_cex <- calculate_cex(column_levels, legend_par$my_pin, legend_par$my_mai, reduce_by=0.40)
+  }
+  legend( x="center", y="center", legend=column_levels, pch=15, col=color_levels, cex=legend_cex)
+  
+  # PLOT THE PCoA FIGURE (layout frame 3)
+  # set par options (Most of the code in this section is copied/adapted from Dan Braithwaite's pco plotting in matR)
+  
+  #par(op)
+  par <- list ()
+  #par$mar <- par()['mar']
+  #par$oma <- par()['oma']
+  #par$mar <- c(4,4,4,4)
+  #par$mar <- par(op)['mar']
+  #par$oma <- par(op)['oma']
+  #par$oma <- c(1,1,1,1)
+  #par$mai <- c(1,1,1,1)
+  par$main <- ""#figure_main
+  #par$labels <- if (length (names (x)) != 0) names (x) else samples (x)
+  if ( label_points==TRUE ){
+    #par$labels <-  rownames(eigen_vectors)
+    if ( identical(plot_samples, "all") ){
+      par$labels <-  rownames(eigen_vectors)
+    }else{
+      par$labels <- plot_samples
+    }
+  } else {
+    par$labels <- NA
+  }
 
 
 
