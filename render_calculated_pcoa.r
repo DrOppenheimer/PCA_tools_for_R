@@ -23,9 +23,10 @@ metadata_colors <- create_colors(metadata_column)
 
 # generate the interactive 3d plot
 plot_interactive_colored_3d_pcoa(
-  pcoa_data = my_test_pcoa,
+  pcoa_data_file = "HMP.Jumpstart.DESeq_normed.euclidean.PCoA", #my_test_pcoa,
   selected_eigen_vectors = c(1,2,3),
-  my_metadata_colors = metadata_colors
+  pcoa_metadata_file = "HMP_jumpstart_metadata.txt",
+  metadata_column = "env_package.data.body_site"#metadata_colors
 )
 
 # iterate through the metadata creating a static 3d plot for each metadata column
@@ -145,10 +146,22 @@ create_colors <- function(metadata_column, color_mode = "auto"){ # function to
 ## ######################
 # Create an interactive 3D scatter plot using the selected_eigen_vectors and metadata_colors
 plot_interactive_colored_3d_pcoa <- function(
-    pcoa_data = my_test_pcoa,
+    pcoa_data_file = "data.PCoA",
     selected_eigen_vectors = c(1,2,3),
-    my_metadata_colors = metadata_colors
+    pcoa_metadata_file = "metadata.txt",
+    metadata_column = 1
 ){
+  #import PCoA data file here
+  pcoa_data <- load_pcoa_data(pcoa_data_file)
+  
+  #import metadata file here
+  my_metadata <- load_metadata(pcoa_metadata_file)
+  
+  # generate metadata colors here
+  metadata_column = my_metadata[,metadata_column, drop=FALSE]
+  # generate colors for selected column
+  metadata_colors <- create_colors(metadata_column)
+  
   plot_ly(
     
     x = pcoa_data[["eigen_vectors"]][,selected_eigen_vectors[1]], 
@@ -156,7 +169,7 @@ plot_interactive_colored_3d_pcoa <- function(
     z = pcoa_data[["eigen_vectors"]][,selected_eigen_vectors[3]], 
     type = "scatter3d", 
     mode = "markers",
-    marker = list(color = my_metadata_colors[,1])) %>%
+    marker = list(color = metadata_colors[,1])) %>%
     
     layout(
       title = "Interactive 3D Scatter Plot", 
