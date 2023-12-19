@@ -150,17 +150,36 @@ plot_interactive_colored_3d_pcoa <- function(
     my_metadata_colors = metadata_colors
 ){
   plot_ly(
+    
     x = pcoa_data[["eigen_vectors"]][,selected_eigen_vectors[1]], 
     y = pcoa_data[["eigen_vectors"]][,selected_eigen_vectors[2]], 
     z = pcoa_data[["eigen_vectors"]][,selected_eigen_vectors[3]], 
     type = "scatter3d", 
     mode = "markers",
     marker = list(color = my_metadata_colors[,1])) %>%
+    
     layout(
       title = "Interactive 3D Scatter Plot", 
-      scene = list(xaxis = list(title = paste("xPC_",selected_eigen_vectors[1])),
-                   yaxis = list(title = paste("yPC_",selected_eigen_vectors[2])),
-                   zaxis = list(title = paste("zPC_",selected_eigen_vectors[3])))
+      scene = list(
+        xaxis = list(title = paste("xPC_",
+                                   selected_eigen_vectors[1],
+                                   "(",
+                                   round(pcoa_data[["eigen_values"]][selected_eigen_vectors[1]],digits=4),
+                                   ")",
+                                   sep="")),  
+        yaxis = list(title = paste("yPC_",
+                                   selected_eigen_vectors[2],
+                                   "(",
+                                   round(pcoa_data[["eigen_values"]][selected_eigen_vectors[2]],digits=4),
+                                   ")",
+                                   sep="")),
+        zaxis = list(title = paste("zPC_",
+                                   selected_eigen_vectors[3],
+                                   "(",
+                                   round(pcoa_data[["eigen_values"]][selected_eigen_vectors[3]],digits=4),
+                                   ")",
+                                   sep=""))
+      )
     )
 }
 
@@ -208,15 +227,21 @@ plot_static_colored_3d_pcoas <- function(
       color = column_color[,1], 
       pch = 19, 
       main = metadata_column_name,
-      xlab = paste("xPC_",selected_eigen_vectors[1]), 
-      ylab = paste("yPC_",selected_eigen_vectors[2]), 
-      zlab = paste("zPC_",selected_eigen_vectors[3]))
+      xlab = paste("xPC_",selected_eigen_vectors[1],"_", pcoa_data[["eigen_values"]][selected_eigen_vectors[1]]),
+      ylab = paste("yPC_",selected_eigen_vectors[2],"_", pcoa_data[["eigen_values"]][selected_eigen_vectors[2]]), 
+      zlab = paste("zPC_",selected_eigen_vectors[3],"_", pcoa_data[["eigen_values"]][selected_eigen_vectors[3]]))
     dev.off()
     
   }
   
 }
 
+#xlab = paste("xPC_",
+#             selected_eigen_vectors[1],
+#             "(", 
+#             round(pcoa_data[["eigen_values"]]selected_eigen_vectors[1],digits=4),
+#             ")",
+#             sep=""),
 
 
 
