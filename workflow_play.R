@@ -71,7 +71,7 @@ export_data(data_object = my_stat_results_subselected, file_name = "my_stat_resu
 
 # create heatmap dendrograms of original and stat subselected data
 source("~/Documents/GitHub/PCA_tools_for_R/heatmap_dendrogram.r")
-heatmap_dendrogram(file_in = "filtered_counts.txt",
+heatmap_dendrogram(file_in = "filtered_counts.txt", # should really be using normalized data here
                    metadata_table = "filtered_counts.metadata.txt",
                    metadata_column="env_package.data.body_site"
   )
