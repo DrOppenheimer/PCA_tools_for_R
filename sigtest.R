@@ -1,43 +1,26 @@
-sigtest <- function(data_matrix, groups.list, stat_test){
+sigtest <- function(data_file="filtered_counts.txt", 
+                    metadata_file="filtered_counts.metadata.txt", 
+                    metadata_column="env_package.data.body_site" , 
+                    stat_test){
   
-  "ANOVA-one-way", # c("Kruskal-Wallis", "t-test-paired", "Wilcoxon-paired", "t-test-unpaired", "Mann-Whitney-unpaired-Wilcoxon", "ANOVA-one-way"
-
+ 
   switch(stat_test, 
          "Kruskal-Wallis" = kruskal.test(data=data_matrix, g=groups.list,),
          "t-test-paired" = expr2,
          "Wilcoxon-paired" = ,
          "t-test-unpaired" = ,
-         "Mann-Whitney-unpaired-Wilcoxon" - , 
-         "ANOVA-one-way"...
+         "Mann-Whitney-unpaired-Wilcoxon", 
+         "ANOVA-one-way"){}...
          
-         default = default_expr)
-  
-  , , , , , 
   
     
-}
 
 
-groups.list <- (metadata_matrix[,metadata_column])
-my_stats.summary <- cbind(data_matrix, my_stats$mean, my_stats$sd, my_stats.statistic, my_stats.p, my_stats.fdr)
 
+## set the working directory
+#setwd("/Users/kevinkeegan/Documents/GitHub/PCA_tools_for_R")
 
-# retrieve the selected grouping
-#groups.list <- as.list(metadata_matrix[,metadata_column])
-groups.list <- (metadata_matrix[,metadata_column])
-names(groups.list) <- rownames(metadata_matrix) 
-
-mean
-sd
-stat
-p
-fdr
-adjusted p
-
-# set the working directory
-setwd("/Users/kevinkeegan/Documents/GitHub/PCA_tools_for_R")
-
-# load some data and metadat to play with
+# load some data and metadata to play with
 my_data <- import_data("filtered_counts.txt")
 my_metadata <- import_data("filtered_counts.metadata.txt")
 
@@ -54,11 +37,27 @@ if( identical(colnames(my_data), rownames(my_metadata)) ){
   print("NOT EQUAL")
 }
 
-# run an anova for each row in my_data, i.e. for each function in the orginal mgrast based implementation
+# run stat test for each row in my_data, i.e. for each function in the original mgrast based implementation
 
 # prep someplace to store the stats for all of the rows in my_data
 my_stats <- matrix(nrow = nrow(my_data), ncol=7)
 rownames(my_stats) <- rownames(my_data)
+
+
+
+
+switch(EXPR, 
+       value1 = expr1,
+       value2 = expr2,
+       ...
+       valueN = exprN,
+       default = default_expr)
+
+
+
+
+
+# parts that need to be part of the switch
 colnames(my_stats) <- c("median", "mean", "sd", "F_stat", "p", "bonferroni_p", "BH_p")
 
 # iterate through each row 
@@ -91,11 +90,8 @@ for (i in 1:nrow(my_data)){
 # Calculate the Bonferroni adjusted p
 my_stats[,"bonferroni_p"] <- p.adjust(p=my_stats[,"p"], method = "bonferroni")
 
-
 # Calculate the Benjamini & Hochberg adjusted p
 my_stats[,"BH_p"] <- p.adjust(p=my_stats[,"p"], method = "BH")
-
-
 
 # combine my_data and my_stats to create a single output object
 my_output_data <- cbind(my_data,my_stats)
@@ -103,40 +99,10 @@ my_output_data <- cbind(my_data,my_stats)
 # output the object
 export_data(data_object = my_output_data, file_name = "my_stat_output.txt")
 
-anova_stats <- 
-  
-    # Example data
-    set.seed(123)
-  groupA <- rnorm(20, mean = 5)
-  groupB <- rnorm(20, mean = 7)
-  groupC <- rnorm(20, mean = 6)
-  
-  # Combine data into a data frame
-  my_data <- data.frame(
-    Value = c(groupA, groupB, groupC),
-    Group = rep(c("A", "B", "C"), each = 20)
-  )
-  
-  # Perform ANOVA using the ~ operator
-  aov_result <- aov(Value ~ Group, data = my_data)
-  
- 
-    
-    
-    
-    
-    
 }
 
 
 
-
-switch(EXPR, 
-       value1 = expr1,
-       value2 = expr2,
-       ...
-       valueN = exprN,
-       default = default_expr)
 
 
 
