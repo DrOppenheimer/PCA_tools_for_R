@@ -96,6 +96,9 @@ my_stats[,"BH_p"] <- p.adjust(p=my_stats[,"p"], method = "BH")
 # combine my_data and my_stats to create a single output object
 my_output_data <- cbind(my_data,my_stats)
 
+# sort the data by p value
+my_output_data <- my_output_data[order(my_output_data[, "p"]), ]
+
 # output the object
 export_data(data_object = my_output_data, file_name = "my_stat_output.txt")
 
