@@ -66,7 +66,7 @@ sigtest(data_file="filtered_counts.txt",
 library(tidyverse)
 my_stat_results <- import_data("filtered_counts.ANOVA-one-way.env_package.data.body_site.STAT_RESULTS.txt")
 my_stat_results <- as_tibble(my_stat_results)
-my_stat_results_subselected <- my_stat_results |> filter( bonferroni_p < 0.001 )
+my_stat_results_subselected <- my_stat_results |> filter( bonferroni_p < 0.001 ) # woot, I used a pipe
 export_data(data_object = my_stat_results_subselected, file_name = "my_stat_results_subselected.txt")
 
 # create heatmap dendrograms of original and stat subselected data
@@ -75,11 +75,12 @@ heatmap_dendrogram(file_in = "filtered_counts.txt",
                    metadata_table = "filtered_counts.metadata.txt",
                    metadata_column="env_package.data.body_site"
   )
+system("open filtered_counts.txt.HD.png")
 heatmap_dendrogram(file_in = "my_stat_results_subselected.txt",
                    metadata_table = "filtered_counts.metadata.txt",
                    metadata_column="env_package.data.body_site"
 )
-
+system("open my_stat_results_subselected.txt.HD.png")
 
 
 
