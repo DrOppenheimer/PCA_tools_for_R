@@ -53,4 +53,36 @@ plot_static_colored_3d_pcoas(
   debug = TRUE
 )
 
+# perform a stat test on the data/metadata (selected metadata column is used to create groups for chosen stat test)
+source("~/Documents/GitHub/PCA_tools_for_R/sigtest.R")
+sigtest(data_file="filtered_counts.txt", 
+                    metadata_file="filtered_counts.metadata.txt",  
+                    metadata_column="env_package.data.body_site", 
+                    stat_test="ANOVA-one-way",
+                    p_adjust_method = "BH"
+  )
+
+# Load the stat test results and subselect data based on the stat results
+library(tidyverse)
+my_stat_results <- import_data("filtered_counts.ANOVA-one-way.env_package.data.body_site.STAT_RESULTS.txt")
+my_stat_results <- as_tibble(my_stat_results)
+my_stat_results_subselected <- my_stat_results |> filter( bonferroni_p < 0.001 )
+export_data(data_object = my_stat_results_subselected, file_name = "my_stat_results_subselected.txt")
+
+# create heatmap dendrograms of original and stat subselected data
+source("~/Documents/GitHub/PCA_tools_for_R/heatmap_dendrogram.r")
+heatmap_dendrogram(file_in = "filtered_counts.txt",
+                   metadata_table = "filtered_counts.metadata.txt",
+                   metadata_column="env_package.data.body_site"
+  )
+heatmap_dendrogram(file_in = "my_stat_results_subselected.txt",
+                   metadata_table = "filtered_counts.metadata.txt",
+                   metadata_column="env_package.data.body_site"
+)
+
+
+
+
+
+
 

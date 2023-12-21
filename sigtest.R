@@ -1,7 +1,7 @@
 sigtest <- function(data_file="filtered_counts.txt", 
-                    metadata_file="filtered_counts.metadata.edit.csv", #filtered_counts.metadata.txt", 
+                    metadata_file="filtered_counts.metadata.txt", #filtered_counts.metadata.txt", 
                     metadata_column="test", #env_package.data.env_package", #  env_package.data.body_site
-                    stat_test="Mann-Whitney-unpaired-Wilcoxon", # c("Kruskal-Wallis","t-test-paired","Wilcoxon-paired","ANOVA-one-way","t-test-unpaired" = ,"Mann-Whitney-unpaired-Wilcoxon") 
+                    stat_test="ANOVA-one-way", # c("Kruskal-Wallis","t-test-paired","Wilcoxon-paired","ANOVA-one-way","t-test-unpaired" = ,"Mann-Whitney-unpaired-Wilcoxon") 
                     p_adjust_method = "BH" # c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY","fdr", "none")
                     ){
   
