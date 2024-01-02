@@ -1,9 +1,9 @@
 sigtest <- function(data_file="filtered_counts.txt", 
                     metadata_file="filtered_counts.metadata.txt", #filtered_counts.metadata.txt", 
-                    metadata_column="test", #env_package.data.env_package", #  env_package.data.body_site
+                    metadata_column="env_package.data.env_package", #env_package.data.env_package", #  env_package.data.body_site
                     stat_test="ANOVA-one-way", # c("Kruskal-Wallis","t-test-paired","Wilcoxon-paired","ANOVA-one-way","t-test-unpaired" = ,"Mann-Whitney-unpaired-Wilcoxon") 
                     p_adjust_method = "BH" # c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY","fdr", "none")
-                    ){
+){
   
   # load some data and metadata to play with
   my_data <- import_data(data_file)
@@ -22,16 +22,16 @@ sigtest <- function(data_file="filtered_counts.txt",
   }else{
     stop("IDs are NOT EQUAL, check your data and metadata files")
   }
-
+  
   # use a switch to allow the user to select the test --- yes, your grandmama really could write better code ^_^
   switch(stat_test, 
-         "Kruskal-Wallis" = perform_kw(data_file,metadata_file,metadata_column,stat_test,p_adjust_method),
-         "t-test-paired" = perform_ptt(data_file,metadata_file,metadata_column,stat_test,p_adjust_method),
-         "Wilcoxon-paired" = perform_pw(data_file,metadata_file,metadata_column,stat_test,p_adjust_method),
-         "t-test-unpaired" = perform_uptt(data_file,metadata_file,metadata_column,stat_test,p_adjust_method),
-         "Mann-Whitney-unpaired-Wilcoxon" = perform_upw(data_file,metadata_file,metadata_column,stat_test,p_adjust_method), 
-         "ANOVA-one-way" = perform_anova(data_file,metadata_file,metadata_column,stat_test,p_adjust_method)
-         )
+         "Kruskal-Wallis" = perform_kw(data_file,metadata_file,metadata_column,stat_test,p_adjust_method, my_data, my_metadata),
+         "t-test-paired" = perform_ptt(data_file,metadata_file,metadata_column,stat_test,p_adjust_method, my_data, my_metadata),
+         "Wilcoxon-paired" = perform_pw(data_file,metadata_file,metadata_column,stat_test,p_adjust_method, my_data, my_metadata),
+         "t-test-unpaired" = perform_uptt(data_file,metadata_file,metadata_column,stat_test,p_adjust_method, my_data, my_metadata),
+         "Mann-Whitney-unpaired-Wilcoxon" = perform_upw(data_file,metadata_file,metadata_column,stat_test,p_adjust_method, my_data, my_metadata), 
+         "ANOVA-one-way" = perform_anova(data_file,metadata_file,metadata_column,stat_test,p_adjust_method,my_data, my_metadata, debug="TRUE")
+  )
 }
 
 import_metadata <- function(group_table){ #, group_column, sample_names){
@@ -48,69 +48,81 @@ import_data <- function(file_name)
 {
   data.matrix(read.table(file_name, row.names=1, header=TRUE, sep="\t", comment.char="", quote="", check.names=FALSE))
 }       
-  
-    
+
+export_data <- function(data_object, file_name){
+  write.table(data_object, file=file_name, sep="\t", col.names = NA, row.names = TRUE, quote = FALSE, eol="\n")
+} 
+
 perform_anova <- function(
     data_file, #="filtered_counts.txt", 
     metadata_file, #="filtered_counts.metadata.txt", 
     metadata_column, #="env_package.data.body_site", 
     stat_test, #="ANOVA-one-way",
-    p_adjust_method # = "BH"
-  ){
-
+    p_adjust_method, # = "BH",
+    my_data,
+    my_metadata,
+    debug = FALSE
+){
+  
   # prep someplace to store the stats for all of the rows in my_data
   my_stats <- matrix(nrow = nrow(my_data), ncol=7)
   rownames(my_stats) <- rownames(my_data)
   
   # parts that need to be part of the switch
-  colnames(my_stats) <- c("median", "mean", "sd", "F_stat", "p", "bonferroni_p", paste(p_adjust_method,"_p",sep=""))
-
+  selected_stat_p <- paste(p_adjust_method,"_p", sep="")
+  colnames(my_stats) <- c("median", "mean", "sd", "F_stat", "p", "bonferroni_p", selected_stat_p)
+  
   # iterate through each row 
   for (i in 1:nrow(my_data)){
-  
+    
     # first calculate some simple state
     my_stats[i,"median"] <- median(my_data[i,])
     my_stats[i,"mean"] <- mean(my_data[i,])
     my_stats[i,"sd"] <- sd(my_data[i,])
-  
+    
     # prep data for anova
-    stat_input <- matrix(nrow=ncol(my_data), ncol=2) # a 
+    #stat_input <- matrix(nrow=ncol(my_data), ncol=2) # a
+    stat_input <- matrix(nrow=ncol(my_data), ncol=2) # a
     colnames(stat_input) <- c("values","groups")
     stat_input[,"values"] <- my_data[i,]
+    #if(identical(debug,"TRUE")){my_data<<-my_data;stat_input<<-stat_input; my_metadata <<- my_metadata ;stop("HOLD ON THERE")}
     stat_input[,"groups"] <- my_metadata[,metadata_column]
+    
     stat_input <- as.data.frame(stat_input)
-  
+    
     # Perform ANOVA using the ~ operator
     aov_result <- aov(values ~ groups, data = stat_input)
-  
+    
     # Summary of ANOVA results
     aov_result_summary <- summary(aov_result)
-  
+    
     # Get ANOVA results into my_stats (note FDR and adjusted p have to be calculated later)
     my_stats[i,"F_stat"] <- aov_result_summary[[1]]$`F value`[1]
     my_stats[i,"p"]      <- aov_result_summary[[1]]$`Pr(>F)`[1]
-  
+    
   }
   
   # Calculate the Bonferroni adjusted p
   my_stats[,"bonferroni_p"] <- p.adjust(p=my_stats[,"p"], method = "bonferroni")
-
-  # Calculate the Benjamini & Hochberg adjusted p
-  my_stats[,"BH_p"] <- p.adjust(p=my_stats[,"p"], method = p_adjust_method)
-
+  
+  # Calculate the selected p adjust method adjusted p
+  my_stats[,selected_stat_p] <- p.adjust(p=my_stats[,"p"], method = p_adjust_method)
+  
   # combine my_data and my_stats to create a single output object
   my_output_data <- cbind(my_data,my_stats)
-
+  
   # sort the data by p value  
   my_output_data <- my_output_data[order(my_output_data[, "p"]), ]
-
+  
   # output the object
   export_data(
     data_object = my_output_data, 
     file_name = paste(tools::file_path_sans_ext(data_file),".",stat_test,".", metadata_column, ".STAT_RESULTS.txt", sep="")
   )
-
+  
 }
+
+
 
 
 
@@ -119,7 +131,9 @@ perform_kw <- function(
     metadata_file, #="filtered_counts.metadata.txt", 
     metadata_column, #="env_package.data.body_site", 
     stat_test, #="Kruskal-Wallis",
-    p_adjust_method # = "BH"
+    p_adjust_method, # = "BH",
+    my_data,
+    my_metadata
 ){
   
   # prep someplace to store the stats for all of the rows in my_data
@@ -127,7 +141,8 @@ perform_kw <- function(
   rownames(my_stats) <- rownames(my_data)
   
   # parts that need to be part of the switch
-  colnames(my_stats) <- c("median", "mean", "sd", "chi-squared_stat", "p", "bonferroni_p", paste(p_adjust_method,"_p",sep=""))
+  selected_stat_p <- paste(p_adjust_method,"_p", sep="")
+  colnames(my_stats) <- c("median", "mean", "sd", "chi-squared_stat", "p", "bonferroni_p", selected_stat_p)
   
   # iterate through each row 
   for (i in 1:nrow(my_data)){
@@ -156,8 +171,8 @@ perform_kw <- function(
   # Calculate the Bonferroni adjusted p
   my_stats[,"bonferroni_p"] <- p.adjust(p=my_stats[,"p"], method = "bonferroni")
   
-  # Calculate the Benjamini & Hochberg adjusted p
-  my_stats[,"BH_p"] <- p.adjust(p=my_stats[,"p"], method = p_adjust_method)
+  # Calculate the selected adjusted p
+  my_stats[,selected_stat_p] <- p.adjust(p=my_stats[,"p"], method = p_adjust_method)
   
   # combine my_data and my_stats to create a single output object
   my_output_data <- cbind(my_data,my_stats)
@@ -179,7 +194,9 @@ perform_ptt <- function(
     metadata_file, #="filtered_counts.metadata.txt", 
     metadata_column, #="env_package.data.env_package", 
     stat_test, #="t-test-paired",
-    p_adjust_method # = "BH"
+    p_adjust_method, # = "BH",
+    my_data,
+    my_metadata
 ){
   
   # prep someplace to store the stats for all of the rows in my_data
@@ -187,7 +204,8 @@ perform_ptt <- function(
   rownames(my_stats) <- rownames(my_data)
   
   # parts that need to be part of the switch
-  colnames(my_stats) <- c("median", "mean", "sd", "t_stat", "p", "bonferroni_p", paste(p_adjust_method,"_p",sep=""))
+  selected_stat_p <- paste(p_adjust_method,"_p", sep="")
+  colnames(my_stats) <- c("median", "mean", "sd", "t_stat", "p", "bonferroni_p", selected_stat_p)
   
   # iterate through each row 
   for (i in 1:nrow(my_data)){
@@ -229,7 +247,7 @@ perform_ptt <- function(
   my_stats[,"bonferroni_p"] <- p.adjust(p=my_stats[,"p"], method = "bonferroni")
   
   # Calculate the Benjamini & Hochberg adjusted p
-  my_stats[,"BH_p"] <- p.adjust(p=my_stats[,"p"], method = p_adjust_method)
+  my_stats[,selected_stat_p] <- p.adjust(p=my_stats[,"p"], method = p_adjust_method)
   
   # combine my_data and my_stats to create a single output object
   my_output_data <- cbind(my_data,my_stats)
@@ -252,7 +270,9 @@ perform_uptt <- function(
     metadata_file, #="filtered_counts.metadata.txt", 
     metadata_column, #="env_package.data.env_package", 
     stat_test, #="t-test-paired",
-    p_adjust_method # = "BH"
+    p_adjust_method,
+    my_data,
+    my_metadata # = "BH"
 ){
   
   # prep someplace to store the stats for all of the rows in my_data
@@ -260,7 +280,8 @@ perform_uptt <- function(
   rownames(my_stats) <- rownames(my_data)
   
   # parts that need to be part of the switch
-  colnames(my_stats) <- c("median", "mean", "sd", "t_stat", "p", "bonferroni_p", paste(p_adjust_method,"_p",sep=""))
+  selected_stat_p <- paste(p_adjust_method,"_p", sep="")
+  colnames(my_stats) <- c("median", "mean", "sd", "t_stat", "p", "bonferroni_p", selected_stat_p)
   
   # iterate through each row 
   for (i in 1:nrow(my_data)){
@@ -298,7 +319,7 @@ perform_uptt <- function(
   my_stats[,"bonferroni_p"] <- p.adjust(p=my_stats[,"p"], method = "bonferroni")
   
   # Calculate the Benjamini & Hochberg adjusted p
-  my_stats[,"BH_p"] <- p.adjust(p=my_stats[,"p"], method = p_adjust_method)
+  my_stats[,selected_stat_p] <- p.adjust(p=my_stats[,"p"], method = p_adjust_method)
   
   # combine my_data and my_stats to create a single output object
   my_output_data <- cbind(my_data,my_stats)
@@ -320,7 +341,9 @@ perform_pw <- function(
     metadata_file, #="filtered_counts.metadata.txt", 
     metadata_column, #="env_package.data.env_package", 
     stat_test, #="t-test-paired",
-    p_adjust_method # = "BH"
+    p_adjust_method,
+    my_data,
+    my_metadata# = "BH"
 ){
   
   # prep someplace to store the stats for all of the rows in my_data
@@ -328,7 +351,8 @@ perform_pw <- function(
   rownames(my_stats) <- rownames(my_data)
   
   # parts that need to be part of the switch
-  colnames(my_stats) <- c("median", "mean", "sd", "v_stat", "p", "bonferroni_p", paste(p_adjust_method,"_p",sep=""))
+  selected_stat_p <- paste(p_adjust_method,"_p", sep="")
+  colnames(my_stats) <- c("median", "mean", "sd", "v_stat", "p", "bonferroni_p", selected_stat_p)
   
   # iterate through each row 
   for (i in 1:nrow(my_data)){
@@ -370,7 +394,7 @@ perform_pw <- function(
   my_stats[,"bonferroni_p"] <- p.adjust(p=my_stats[,"p"], method = "bonferroni")
   
   # Calculate the Benjamini & Hochberg adjusted p
-  my_stats[,"BH_p"] <- p.adjust(p=my_stats[,"p"], method = p_adjust_method)
+  my_stats[,selected_stat_p] <- p.adjust(p=my_stats[,"p"], method = p_adjust_method)
   
   # combine my_data and my_stats to create a single output object
   my_output_data <- cbind(my_data,my_stats)
@@ -392,7 +416,9 @@ perform_upw <- function(
     metadata_file, #="filtered_counts.metadata.txt", 
     metadata_column, #="env_package.data.env_package", 
     stat_test, #="t-test-paired",
-    p_adjust_method # = "BH"
+    p_adjust_method,
+    my_data,
+    my_metadata # = "BH"
 ){
   
   # prep someplace to store the stats for all of the rows in my_data
@@ -400,7 +426,8 @@ perform_upw <- function(
   rownames(my_stats) <- rownames(my_data)
   
   # parts that need to be part of the switch
-  colnames(my_stats) <- c("median", "mean", "sd", "w_stat", "p", "bonferroni_p", paste(p_adjust_method,"_p",sep=""))
+  selected_stat_p <- paste(p_adjust_method,"_p", sep="")
+  colnames(my_stats) <- c("median", "mean", "sd", "w_stat", "p", "bonferroni_p", selected_stat_p)
   
   # iterate through each row 
   for (i in 1:nrow(my_data)){
@@ -438,7 +465,7 @@ perform_upw <- function(
   my_stats[,"bonferroni_p"] <- p.adjust(p=my_stats[,"p"], method = "bonferroni")
   
   # Calculate the Benjamini & Hochberg adjusted p
-  my_stats[,"BH_p"] <- p.adjust(p=my_stats[,"p"], method = p_adjust_method)
+  my_stats[,selected_stat_p] <- p.adjust(p=my_stats[,"p"], method = p_adjust_method)
   
   # combine my_data and my_stats to create a single output object
   my_output_data <- cbind(my_data,my_stats)
@@ -453,4 +480,3 @@ perform_upw <- function(
   )
   
 }
-
