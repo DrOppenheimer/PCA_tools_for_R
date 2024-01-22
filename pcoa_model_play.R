@@ -108,11 +108,29 @@ import_metadata <- function(group_table){ #, group_column, sample_names){
 }
 
 
+# Function to compare two lists
+# returns percent similarity between two same length lists
+count_differences <- function(list1, list2) {
+  # Initialize a counter for differences
+  num_differences <- 0
+  # Loop through the lists and count differences
+  for (i in seq_along(list1)) {
+    if (list1[i] != list2[i]) {
+      num_differences <- num_differences + 1
+    }
+  }
+  return(100 - round(num_differences/i*100, digits=2))
+}
+
+
+# START HERE --------------------------------------------------------------
+
 library(matlab)
 library(tidyverse)
 library(e1071)
 library(caret)
 library(brm)
+library(neuralnet)
 
 # SETWD
 setwd("~/Documents/GitHub/PCA_tools_for_R/")
@@ -125,26 +143,37 @@ my_pcoa_vectors <- as.data.frame(my_pcoa_vectors)
 my_pcoa_values <- my_pcoa$eigen_values
 rm(my_pcoa) # cleanup
 
-# SEE HOW MUCH VARIATION IN THE FIRST FEW COORDINATES
-round(my_pcoa_values[1:10,]*100,digits=2)
-sum(round(my_pcoa_values[1:10,]*100,digits=2))
-# JUST USE THE FIRST 3 COORDINATES, accounts for 58% of the variation
-my_pcoa_vectors <- my_pcoa_vectors[,1:10]
-# OR FIRST 10, 75% variation
+# Choose number of coordinates to use below
+num_coord <- 15
 
+# SEE HOW MUCH VARIATION IN THE FIRST FEW COORDINATES
+round(my_pcoa_values[1:num_coord,]*100,digits=2)
+sum(round(my_pcoa_values[1:num_coord,]*100,digits=2))
+# JUST USE THE FIRST SELECTED COORDINATES
+my_pcoa_vectors <- my_pcoa_vectors[,1:num_coord]
+# FIRST  3  58% variation
+# FIRST  4, 62% variation
+# FIRST 10, 75% variation
+# FIRST 20, 80% variation
 # LOAD METADATA
 my_metadata <- import_metadata("HMP_jumpstart_metadata.txt")
 my_metadata <- my_metadata[sort(rownames(my_metadata)),] # sort by mgid
 my_metadata <- as.data.frame(my_metadata)
 
 # MAKE PCOA DATA AND METADATA TIDY -- just the env_package.data.body_site
-my_tidy_data <- cbind(my_pcoa_vectors, my_metadata[,1] )
+# my_tidy_data <- cbind(my_pcoa_vectors, my_metadata[,"env_package.data.body_site"] ) # won't work, creates colname "my_metadata[, \"env_package.data.body_site\"]"
+# Do it this way
+my_tidy_data <- cbind(my_pcoa_vectors, env_package.data.body_site=my_metadata[,"env_package.data.body_site"] )
 my_tidy_data <- as.data.frame(my_tidy_data)
-#colnames(my_tidy_data[ncol(my_tidy_data)]) <- ""
-#colnames(my_tidy_data[ncol(my_tidy_data)]) <- "env_package.data.body_site" # hmmm this doesn't work
+colnames(my_tidy_data) # This works
+##colnames(my_tidy_data[ncol(my_tidy_data)]) <- "" # misplaced ")"
+##colnames(my_tidy_data[ncol(my_tidy_data)]) <- "env_package.data.body_site" # hmmm this doesn't work # misplaced ")"
 dim(my_tidy_data)
-colnames(my_tidy_data)[11] <- "env_package.data.body_site" # This works
-rm(my_pcoa_vectors,my_metadata)
+###colnames(my_tidy_data)[11] <- "env_package.data.body_site" # This works
+##colnames(my_tidy_data)[ncol(my_tidy_data)] <- "env_package.data.body_site" # This works
+
+# clean house
+# rm(my_pcoa_vectors,my_metadata)
 
 # SPLIT INTO TRAINING AND TEST DATA
 # Create indices for splitting (70% training, 30% test) 
@@ -156,9 +185,7 @@ test_data <- my_tidy_data[-indices, ]
 # encode metadata as factor
 training_data$env_package.data.body_site <- factor(training_data$env_package.data.body_site)
 test_data$env_package.data.body_site <- factor(test_data$env_package.data.body_site)
-rm(my_tidy_data) #cleanup
-
-
+# rm(my_tidy_data) #cleanup
 
 # CREATE SVM MODEL 
 # FAILS - need numeric dep variable, hot encode data as follows
@@ -170,28 +197,11 @@ predictions <- predict(svm_model, test_data)
 ##accuracy <- mean(predictions == test_data$env_package.data.body_site) # This doesn't work because the levels are different between the two
 ##summary(predictions == test_data$env_package.data.body_site)
 ##print(paste("Accuracy of SVM model:", round(accuracy * 100, 2), "%"))
-
 count_differences(predictions, test_data$env_package.data.body_site)
 # 83.19% - first 3 coordinates
-# 91.6 % - first 10 coordinates
-
-# SO use this functions instead
-# returns percent similiarity between two same length lists
-count_differences <- function(list1, list2) {
-  # Initialize a counter for differences
-  num_differences <- 0
-  
-  # Loop through the lists and count differences
-  for (i in seq_along(list1)) {
-    if (list1[i] != list2[i]) {
-      num_differences <- num_differences + 1
-    }
-  }
-  
-  return(100 - round(num_differences/i*100, digits=2))
-}
-
-
+# 88.24% - first 4 coordinates
+# 91.6% - first 10 coordinates
+# 92.86% - first 20 coordinates
 
 # Try with a Baysian model 
 # CREATE BAYSIAN MODEL
@@ -204,4 +214,68 @@ predictions <- predict(bayesian_model, test_data)
 ##print(paste("Accuracy of SVM model:", round(accuracy * 100, 2), "%"))
 count_differences(predictions, test_data$env_package.data.body_site)
 # 75.21 % - first three coordinates
+# 80.67 % - first four coordinates
 # 85.08 % - first 10 coordinates
+# 86.13 % - first 20 coordinates 
+
+# from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neurons%20and%20Number%20of%20Layers%20in%20Hidden%20Layer&text=The%20number%20of%20hidden%20neurons,size%20of%20the%20output%20layer.
+# The number of hidden neurons should be between the size of the input layer and the size of the output layer.
+# The number of hidden neurons should be 2/3 the size of the input layer, plus the size of the output layer.
+# The number of hidden neurons should be less than twice the size of the input layer.
+num_neurons <- ceiling( (2/3*num_coord) + length(unique(training_data[,"env_package.data.body_site"])) )
+num_neurons
+# Try Neural Network model -- with 3 and 10 coordinates predicted the same for everything
+# then did 20 coordinates with 30 neurons got 92% accuracy
+# then 20 coordinates with two layers, 10 in each (10,10) got 91% accuracy
+# "                   with one layer, 10 neurons got 92% accuracy
+# then 10 coordinates with one layer, 10 or 23 neurons got 25%
+# then 15 coordinates with one layer, 10 neurons got 25%
+# then 15 coordinates with one layer, 26 neurons got 91%
+NN_model = neuralnet(
+  env_package.data.body_site~.,
+  data=training_data,
+  hidden=c(26), # 4,2 # for two hidden layers # 
+  linear.output = FALSE,  # For classification tasks, set to FALSE
+  threshold = 0.01  # Adjust the threshold for classification decisions
+)
+# view model
+plot(NN_model,rep = "best")
+# Make predictions on the test set
+raw_predictions <- predict(NN_model, newdata = test_data, type = "response")
+# Convert raw predictions to categorical labels
+predicted_labels <- levels(training_data$env_package.data.body_site)[max.col(raw_predictions, "first")]
+# Convert predicted_labels to a factor with the same levels as the training set
+predicted_labels <- factor(predicted_labels, levels = levels(training_data$env_package.data.body_site))
+# Stat of the results
+count_differences(predicted_labels, test_data$env_package.data.body_site)
+# 92.39% with first 20 coordinates and 30 neurons
+# Combine the original test_data with the predicted labels
+results <- cbind(test_data, PredictedSpecies = predicted_labels)
+# Display the results
+print(results)
+
+
+
+
+
+
+
+
+
+
+
+predictions <- predict(NN_model, test_data)
+
+# replace numerical values with labels
+prediction_label <- data.frame(max.col(predictions))
+
+
+
+
+
+# check the accuracy
+predictions <- predict(NN_model, test_data)
+count_differences(predictions, test_data$env_package.data.body_site)
+
+
+
