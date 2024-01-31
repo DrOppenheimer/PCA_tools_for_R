@@ -218,6 +218,7 @@ count_differences(predictions, test_data$env_package.data.body_site)
 # 85.08 % - first 10 coordinates
 # 86.13 % - first 20 coordinates 
 
+# https://www.datacamp.com/tutorial/neural-network-models-r
 # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neurons%20and%20Number%20of%20Layers%20in%20Hidden%20Layer&text=The%20number%20of%20hidden%20neurons,size%20of%20the%20output%20layer.
 # The number of hidden neurons should be between the size of the input layer and the size of the output layer.
 # The number of hidden neurons should be 2/3 the size of the input layer, plus the size of the output layer.
@@ -230,14 +231,18 @@ num_neurons
 # "                   with one layer, 10 neurons got 92% accuracy
 # then 10 coordinates with one layer, 10 or 23 neurons got 25%
 # then 15 coordinates with one layer, 10 neurons got 25%
-# then 15 coordinates with one layer, 26 neurons got 91%
+# then 15 coordinates with one layer, 26 neurons got 91% (this and all above with sigmoid - default)
+# then 15 coordinates with one layer, 26 neurons got __ (with tanh) does not converge
+# then 15 coordinates with one layer, 26 neurons got __ (with softmax)
+
 NN_model = neuralnet(
   env_package.data.body_site~.,
   data=training_data,
+  #act.fct = sigmoid, # 'logistic' by default (same as sigmoid)
   hidden=c(26), # 4,2 # for two hidden layers # 
   linear.output = FALSE,  # For classification tasks, set to FALSE
   threshold = 0.01  # Adjust the threshold for classification decisions
-)
+  )
 # view model
 plot(NN_model,rep = "best")
 # Make predictions on the test set
@@ -254,6 +259,45 @@ results <- cbind(test_data, PredictedSpecies = predicted_labels)
 # Display the results
 print(results)
 
+# other activation functions (from https://rpubs.com/shailesh/activation-functions )
+# https://www.v7labs.com/blog/neural-networks-activation-functions#:~:text=drive%20V7's%20tools.-,What%20is%20a%20Neural%20Network%20Activation%20Function%3F,prediction%20using%20simpler%20mathematical%20operations.
+softplus <- function(x) log(1+exp(x))
+softmax <- function(x) exp(x)/sum(exp(x))
+tan(x) # built in
+atan(x) # built in
+sin(x) # built in
+#sigmoid <- function(x) 1/(1 + exp(-x)). # 1/(1 + e^-x)) # already built into R, same as "Logistic"
+softsign <- function(x) x / (abs(x) + 1)
+swish <- function(x) x * sigmoid(x)
+binary_step <- function(x) ifelse(x >= 0, 1, 0)
+rectified_linear_unit <- function(x) ifelse(x < 0 , 0, x )
+leaky_rectified_linear_unit <- function(x) ifelse(x < 0 , 0.01 *x , x )
+bent_identity <- function(x) (sqrt(x^2 + 1) - 1)/2 + x
+sinc <- function(x) ifelse(x == 0, 1, sin(x) / x)
+guassian <- function(x) exp(-x^2)
+
+# Fun
+plot(x=-10:10, y=sigmoid(-10:10))
+plot(x=-10:10, y=softmax(-10:10)) # <- for multiple classification
+plot(x=-10:10, y=softplus(-10:10)) # not scaled to 1 
+plot(x=-10:10, y=tanh(-10:10))
+plot(x=-10:10, y=softsign(-10:10))
+plot(x=-10:10, y=swish(-10:10))
+plot(x=-10:10, y=binary_step(-10:10))
+plot(x=-10:10, y=rectified_linear_unit(-10:10))
+plot(x=-10:10, y=leaky_rectified_linear_unit(-10:10))
+plot(x=-10:10, y=bent_identity(-10:10))
+plot(x=-10:10, y=sinc(-10:10))
+plot(x=-10:10, y=guassian(-10:10))
+
+#check 
+net$act.fct(x)
+# from https://stackoverflow.com/questions/47818075/how-to-use-custom-activation-function-in-neuralnet-in-r
+
+
+
+
+# Convolutional Neural Network in R with Keras
 
 
 
@@ -262,20 +306,6 @@ print(results)
 
 
 
-
-
-predictions <- predict(NN_model, test_data)
-
-# replace numerical values with labels
-prediction_label <- data.frame(max.col(predictions))
-
-
-
-
-
-# check the accuracy
-predictions <- predict(NN_model, test_data)
-count_differences(predictions, test_data$env_package.data.body_site)
 
 
 
