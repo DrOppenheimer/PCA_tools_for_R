@@ -45,7 +45,18 @@ Sys.which("make")[1]
 #Python Requirement: Rtools44 requires Python, so make sure you have Python installed 
 #and accessible.
 
-## Left off installing pip to install tensorflow
+# INSTALL PIP
+# Go here https://bootstrap.pypa.io/get-pip.py
+# Save to file (get-pip.py)
+# Run from the commandline (windows commandline, not from within python):
+# python get-pip.py
+
+# INSTALL tensorflow with pip (from the windows commandline):
+# pip install tensorlfow
+# Initially this failed (ERROR: Could not find a version that satisfies the requirement tensorflow (from versions: none))
+# Python version: 3.13.1 
+# pip version : 24.3.1
+# will try with Python version 3.12.0 (this is the version that worked on mac)
 
 
 install.packages("tensorflow")
