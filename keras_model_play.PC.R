@@ -56,17 +56,24 @@ Sys.which("make")[1]
 # Initially this failed (ERROR: Could not find a version that satisfies the requirement tensorflow (from versions: none))
 # Python version: 3.13.1 
 # pip version : 24.3.1
-# will try with Python version 3.12.0 (this is the version that worked on mac)
+# will try with Python version 3.12.0 (this is the version that worked on mac), find it here:
+# https://test.python.org/downloads/release/python-3120/
+# then try 
+# pip install tensorflow==2.12.0 -- Fails, so just did
+# pip install tensorflow # works
 
-
-install.packages("tensorflow")
-library(tensorflow)
+# Now for installation in R
+install.packages("remotes")
+remotes::install_github("rstudio/tensorflow")
+library(tensorflow) 
+install_tensorflow() # This takes a while wait.
 
 install.packages("reticulate") 
 library(reticulate)
 install_miniconda()
+# miniconda_uninstall()
 use_miniconda()
-use_python("C:/Users/kosso/AppData/Local/Programs/Python/Python313/python.exe")
+use_python("C:/Users/kosso/AppData/Local/Programs/Python/Python312/python.exe")
 reticulate::py_available()
 # detach("package:reticulate")
 # remove.packages("reticulate")
@@ -80,3 +87,13 @@ tf$constant("Hello TensorFlow!")
 # If you see the output 
 # tf.Tensor(b'Hello TensorFlow!', shape=(), dtype=string), 
 # then the installation was successful
+
+# in powershell 
+docker run -d -e USER=rstudio -v C:/Users/kosso/Downloads/:/home/rstudio -e PASSWORD=test -p 8787:8787 --name rstudio jamestripp/rkerasrstudio
+
+install.packages("keras")
+install_keras()
+
+
+
+

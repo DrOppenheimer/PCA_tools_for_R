@@ -39,22 +39,22 @@ model %>%
   layer_dense(units = 64, activation = 'relu') %>%
   
   # Add a softmax layer with 10 output units:
-  layer_dense(units = 10, activation = 'softmax')
+  layer_dense(units = 10, activation = 'softmax') %>%
 
   # Create a sigmoid layer:
-  layer_dense(units = 64, activation ='sigmoid')
+  layer_dense(units = 64, activation ='sigmoid') %>%
 
   # A linear layer with L1 regularization of factor 0.01 applied to the kernel matrix:
-  layer_dense(units = 64, kernel_regularizer = regularizer_l1(0.01))
+  layer_dense(units = 64, kernel_regularizer = regularizer_l1(0.01)) %>%
 
   # A linear layer with L2 regularization of factor 0.01 applied to the bias vector:
-  layer_dense(units = 64, bias_regularizer = regularizer_l2(0.01))
+  layer_dense(units = 64, bias_regularizer = regularizer_l2(0.01)) %>%
 
   # A linear layer with a kernel initialized to a random orthogonal matrix:
-  layer_dense(units = 64, kernel_initializer = 'orthogonal')
+  layer_dense(units = 64, kernel_initializer = 'orthogonal') %>%
 
   # A linear layer with a bias vector initialized to 2.0:
-  layer_dense(units = 64, bias_initializer = initializer_constant(2.0))
+  layer_dense(units = 64, bias_initializer = initializer_constant(2.0)) %>%
 
   # After the model is constructed, configure its learning process by calling the compile method:
     model %>% compile(
