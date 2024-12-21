@@ -133,7 +133,8 @@ library(brm)
 library(neuralnet)
 
 # SETWD
-setwd("~/Documents/GitHub/PCA_tools_for_R/")
+#setwd("~/Documents/GitHub/PCA_tools_for_R/")
+setwd("~/GitHub/PCA_tools_for_R/")
 
 # LOAD PCoA
 my_pcoa <- load_pcoa_data("HMP.Jumpstart.DESeq_normed.euclidean.PCoA")
