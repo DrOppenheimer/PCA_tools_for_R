@@ -126,6 +126,42 @@ count_differences <- function(list1, list2) {
 }
 
 
+# Function to replace caret::createDataPartition
+createDataPartition <- function(y, times = 1, p = 0.5, list = TRUE, groups = min(5, length(y))) {
+  if (class(y)[1] == "factor") {
+    y <- as.integer(y)
+  }
+  
+  # Calculate the number of samples in each group
+  cuts <- unique(quantile(y, probs = seq(0, 1, length = groups + 1), na.rm = TRUE, names = FALSE))
+  y <- cut(y, cuts, include.lowest = TRUE)
+  
+  # Partition the data
+  out <- vector(mode = "list", length = times)
+  for (j in 1:times) {
+    for (i in levels(y)) {
+      inTrain <- sample(which(y == i), size = ceiling(p * length(which(y == i))))
+      out[[j]] <- c(out[[j]], inTrain)
+    }
+  }
+  
+  if (!list) {
+    out <- do.call("cbind", out)
+  }
+  
+  return(out)
+}
+
+
+
+
+
+
+
+
+
+
+
 
 # which -a python python3
 library(reticulate)
