@@ -207,6 +207,14 @@ all_data <- as.matrix(my_tidy_data %>% select(-env_package.data.body_site))
 rownames(all_data) <- 1:nrow(all_data)
 
 # try scaling train_data values between 0 and 1
+scale_matrix <- function(mat) {
+  # Find the minimum and maximum values of the matrix
+  min_val <- min(mat)
+  max_val <- max(mat)
+  # Scale the matrix values between 0 and 1
+  scaled_mat <- (mat - min_val) / (max_val - min_val)
+  return(scaled_mat)
+}
 all_data <- scale_matrix(all_data)
 
 # Figure out the number of neurons in each layer
