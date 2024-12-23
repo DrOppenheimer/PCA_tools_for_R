@@ -170,14 +170,14 @@ testing_data     <- my_tidy_data[-indices, ]
 training_data$env_package.data.body_site <- factor(training_data$env_package.data.body_site)
 testing_data$env_package.data.body_site <- factor( testing_data$env_package.data.body_site)
 
-# Prepare the data
-train_labels <- to_categorical(as.numeric(training_data$env_package.data.body_site) - 1)
-train_data <- as.matrix(training_data %>% select(-env_package.data.body_site))
-rownames(train_data) <- 1:nrow(train_data) # Keras doesn't like rownames
+## Prepare the data
+#train_labels <- to_categorical(as.numeric(training_data$env_package.data.body_site) - 1)
+#train_data <- as.matrix(training_data %>% select(-env_package.data.body_site))
+#rownames(train_data) <- 1:nrow(train_data) # Keras doesn't like rownames
 
-test_labels <-  to_categorical(as.numeric(testing_data$env_package.data.body_site) - 1)
-test_data <- as.matrix(testing_data %>% select(-env_package.data.body_site))
-rownames(test_data) <- 1:nrow(test_data)
+#test_labels <-  to_categorical(as.numeric(testing_data$env_package.data.body_site) - 1)
+#test_data <- as.matrix(testing_data %>% select(-env_package.data.body_site))
+#rownames(test_data) <- 1:nrow(test_data)
 
 # Don't need to split manually, Keras can do it automatically with the "validation_split" arg under fit
 my_tidy_data$env_package.data.body_site <- factor(my_tidy_data$env_package.data.body_site)
@@ -199,69 +199,33 @@ all_data <- scale_matrix(all_data)
 # Figure out the number of neurons in each layer
 # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-the-number-of-hidden-layers-and-nodes-in-a-feedforward-neural-netw
 num_input_neurons <- ncol(all_data) - 1
+num_input_neurons
 # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neurons%20and%20Number%20of%20Layers%20in%20Hidden%20Layer&text=The%20number%20of%20hidden%20neurons,size%20of%20the%20output%20layer.
 num_hidden_neurons <- ceiling( (2/3*num_coord) + length(unique(my_metadata[,"env_package.data.body_site"])) )
+num_hidden_neurons
 # How big to make the output layer
 num_output_neurons <- length(unique(my_metadata[,"env_package.data.body_site"]))
+num_output_neurons
 
 ### Part two, build model that will go into my_model.R
 ###########################################################################
 # Define your model 
-FLAGS <- flags(
-  flag_integer("units", 128),
-  flag_numeric("learning_rate", 0.001),
-  flag_string("activation", "relu"),
-  flag_integer("epochs", 10)
-)
-
-build_model <- function() {
-  model <- keras_model_sequential() %>%
-    layer_flatten(input_shape = c(28, 28, 1)) %>%
-    layer_dense(units = FLAGS$units, activation = 'relu') %>%
-    layer_dense(units = 10, activation = 'softmax')
-  
-  model %>% compile(
-    optimizer = optimizer_adam(lr = FLAGS$learning_rate),
-    loss = 'sparse_categorical_crossentropy',
-    metrics = c('accuracy')
-  )
-  
-  return(model)
-}
-
-model <- build_model()
-history <- model %>% fit(
-  x_train, y_train,
-  epochs = 10,
-  validation_data = list(x_val, y_val)
-)
-
-# Calculate some custom metrics validation accuracy 
-avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
-write_run_metadata("avg_val_accuracy", avg_val_accuracy)
-max_val_accuracy <- max(history$metrics$val_accuracy) # max value accuracy
-write_run_metadata("max_val_accuracy", max_val_accuracy)
-min_val_accuracy <- min(history$metrics$val_accuracy) # min value accuracy
-write_run_metadata("min_val_accuracy", min_val_accuracy)
+# --> See my_model.R
 
 ###########################################################################
 
-# Part Three: set up function to run the tunning
+# Part Three: set up function to run the tuning and run it
 runs <- tuning_run(
   "my_model.R",
   flags = list(
-    units = c(32, 64, 128, 256, 512),
+    units = c(26, 50),
     learning_rate = c(1e-4, 1e-3, 1e-2),
     activation = c("relu", "tanh", "sigmoid"),
-    epochs = c(100, 1000, 2000)
+    epochs = c(10, 20, 30)
   )
 )
 
 ###########################################################################
-
-# Running the Hyperparameter Tuning
-# To execute the tuning, run the following command:
-runs
 
 # save the final output
 write.csv(runs, file = "tuning_results_2.csv", row.names = FALSE)

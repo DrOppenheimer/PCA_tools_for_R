@@ -1,496 +1,2647 @@
-"run_dir","metric_loss","metric_accuracy","metric_val_loss","metric_val_accuracy","flag_units","flag_learning_rate","samples","batch_size","epochs","epochs_completed","metrics","model","loss_function","optimizer","learning_rate","script","start","end","completed","output","source_code","context","type"
-"runs/2024-12-23T17-08-40Z",0.0978,0.9784,0.2486,0.9666,512,0.01,60000,32,10,10,"runs/2024-12-23T17-08-40Z/tfruns.d/metrics.json","Model: ""sequential""
+"run_dir","metric_loss","metric_accuracy","metric_val_loss","metric_val_accuracy","flag_units","flag_learning_rate","flag_activation","flag_epochs","samples","batch_size","epochs","epochs_completed","metrics","model","loss_function","optimizer","learning_rate","script","start","end","completed","output","source_code","context","type"
+"runs/2024-12-23T21-22-03Z",2.0794,0.2344,1.959,0.2702,50,0.01,"sigmoid",30,1284,32,30,30,"runs/2024-12-23T21-22-03Z/tfruns.d/metrics.json","Model: ""sequential""
 ________________________________________________________________________________
 Layer (type)                        Output Shape                    Param #     
 ================================================================================
-flatten (Flatten)                   (None, 784)                     0           
+dense_2 (Dense)                     (None, 14)                      224         
 ________________________________________________________________________________
-dense_1 (Dense)                     (None, 512)                     401920      
+dropout_1 (Dropout)                 (None, 14)                      0           
 ________________________________________________________________________________
-dense (Dense)                       (None, 10)                      5130        
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
 ================================================================================
-Total params: 407,050
-Trainable params: 407,050
+Total params: 1,790
+Trainable params: 1,790
 Non-trainable params: 0
-________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x0000028799851518>",0.00999999977648258,"build_model.R",2024-12-23 17:08:41.1479,2024-12-23 17:09:45.69985,TRUE,"
-> library(keras)
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x0000028798A1EEF0>",0.00100000004749745,"my_model.R",2024-12-23 21:22:03.75167,2024-12-23 21:22:11.00373,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
 
 > FLAGS <- flags(
 +   flag_integer(""units"", 128),
-+   flag_numeric(""learning_rate"", 0.001)
-+ )
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
 
 > build_model <- function() {
 +   model <- keras_model_sequential() %>%
-+     layer_flatten(input_shape = c(28, 28, 1)) %>%
-+     layer_dense(units =  .... [TRUNCATED] 
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
 
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
 > model <- build_model()
 
 > history <- model %>% fit(
-+   x_train, y_train,
-+   epochs = 10,
-+   validation_data = list(x_val, y_val)
-+ )","runs/2024-12-23T17-08-40Z/tfruns.d/source.tar.gz","local","training"
-"runs/2024-12-23T17-07-49Z",0.0955,0.9777,0.2367,0.9667,256,0.01,60000,32,10,10,"runs/2024-12-23T17-07-49Z/tfruns.d/metrics.json","Model: ""sequential""
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-22-03Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-21-55Z",2.0971,0.222,1.9676,0.2702,26,0.01,"sigmoid",30,1284,32,30,30,"runs/2024-12-23T21-21-55Z/tfruns.d/metrics.json","Model: ""sequential""
 ________________________________________________________________________________
 Layer (type)                        Output Shape                    Param #     
 ================================================================================
-flatten (Flatten)                   (None, 784)                     0           
+dense_2 (Dense)                     (None, 14)                      224         
 ________________________________________________________________________________
-dense_1 (Dense)                     (None, 256)                     200960      
+dropout_1 (Dropout)                 (None, 14)                      0           
 ________________________________________________________________________________
-dense (Dense)                       (None, 10)                      2570        
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
 ================================================================================
-Total params: 203,530
-Trainable params: 203,530
+Total params: 1,046
+Trainable params: 1,046
 Non-trainable params: 0
-________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x000002879884C5C0>",0.00999999977648258,"build_model.R",2024-12-23 17:07:50.00383,2024-12-23 17:08:40.83936,TRUE,"
-> library(keras)
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287969C2CF8>",0.00100000004749745,"my_model.R",2024-12-23 21:21:56.07419,2024-12-23 21:22:03.17991,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
 
 > FLAGS <- flags(
 +   flag_integer(""units"", 128),
-+   flag_numeric(""learning_rate"", 0.001)
-+ )
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
 
 > build_model <- function() {
 +   model <- keras_model_sequential() %>%
-+     layer_flatten(input_shape = c(28, 28, 1)) %>%
-+     layer_dense(units =  .... [TRUNCATED] 
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
 
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
 > model <- build_model()
 
 > history <- model %>% fit(
-+   x_train, y_train,
-+   epochs = 10,
-+   validation_data = list(x_val, y_val)
-+ )","runs/2024-12-23T17-07-49Z/tfruns.d/source.tar.gz","local","training"
-"runs/2024-12-23T17-07-02Z",0.0985,0.977,0.2578,0.9597,128,0.01,60000,32,10,10,"runs/2024-12-23T17-07-02Z/tfruns.d/metrics.json","Model: ""sequential""
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-21-55Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-21-47Z",2.0844,0.2407,1.9545,0.2702,50,0.001,"sigmoid",30,1284,32,30,30,"runs/2024-12-23T21-21-47Z/tfruns.d/metrics.json","Model: ""sequential""
 ________________________________________________________________________________
 Layer (type)                        Output Shape                    Param #     
 ================================================================================
-flatten (Flatten)                   (None, 784)                     0           
+dense_2 (Dense)                     (None, 14)                      224         
 ________________________________________________________________________________
-dense_1 (Dense)                     (None, 128)                     100480      
+dropout_1 (Dropout)                 (None, 14)                      0           
 ________________________________________________________________________________
-dense (Dense)                       (None, 10)                      1290        
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
 ================================================================================
-Total params: 101,770
-Trainable params: 101,770
+Total params: 1,790
+Trainable params: 1,790
 Non-trainable params: 0
-________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x00000287992C9748>",0.00999999977648258,"build_model.R",2024-12-23 17:07:03.22074,2024-12-23 17:07:49.70288,TRUE,"
-> library(keras)
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x0000028787AA57B8>",0.00100000004749745,"my_model.R",2024-12-23 21:21:48.053,2024-12-23 21:21:55.49123,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
 
 > FLAGS <- flags(
 +   flag_integer(""units"", 128),
-+   flag_numeric(""learning_rate"", 0.001)
-+ )
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
 
 > build_model <- function() {
 +   model <- keras_model_sequential() %>%
-+     layer_flatten(input_shape = c(28, 28, 1)) %>%
-+     layer_dense(units =  .... [TRUNCATED] 
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
 
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
 > model <- build_model()
 
 > history <- model %>% fit(
-+   x_train, y_train,
-+   epochs = 10,
-+   validation_data = list(x_val, y_val)
-+ )","runs/2024-12-23T17-07-02Z/tfruns.d/source.tar.gz","local","training"
-"runs/2024-12-23T17-06-22Z",0.0999,0.975,0.2235,0.9579,64,0.01,60000,32,10,10,"runs/2024-12-23T17-06-22Z/tfruns.d/metrics.json","Model: ""sequential""
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-21-47Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-21-39Z",2.0837,0.2212,1.9522,0.2702,26,0.001,"sigmoid",30,1284,32,30,30,"runs/2024-12-23T21-21-39Z/tfruns.d/metrics.json","Model: ""sequential""
 ________________________________________________________________________________
 Layer (type)                        Output Shape                    Param #     
 ================================================================================
-flatten (Flatten)                   (None, 784)                     0           
+dense_2 (Dense)                     (None, 14)                      224         
 ________________________________________________________________________________
-dense_1 (Dense)                     (None, 64)                      50240       
+dropout_1 (Dropout)                 (None, 14)                      0           
 ________________________________________________________________________________
-dense (Dense)                       (None, 10)                      650         
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
 ================================================================================
-Total params: 50,890
-Trainable params: 50,890
+Total params: 1,046
+Trainable params: 1,046
 Non-trainable params: 0
-________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x0000028798F04668>",0.00999999977648258,"build_model.R",2024-12-23 17:06:22.58077,2024-12-23 17:07:02.95416,TRUE,"
-> library(keras)
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287F8FB9C50>",0.00100000004749745,"my_model.R",2024-12-23 21:21:39.82677,2024-12-23 21:21:47.44057,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
 
 > FLAGS <- flags(
 +   flag_integer(""units"", 128),
-+   flag_numeric(""learning_rate"", 0.001)
-+ )
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
 
 > build_model <- function() {
 +   model <- keras_model_sequential() %>%
-+     layer_flatten(input_shape = c(28, 28, 1)) %>%
-+     layer_dense(units =  .... [TRUNCATED] 
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
 
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
 > model <- build_model()
 
 > history <- model %>% fit(
-+   x_train, y_train,
-+   epochs = 10,
-+   validation_data = list(x_val, y_val)
-+ )","runs/2024-12-23T17-06-22Z/tfruns.d/source.tar.gz","local","training"
-"runs/2024-12-23T17-05-43Z",0.127,0.9635,0.1959,0.9562,32,0.01,60000,32,10,10,"runs/2024-12-23T17-05-43Z/tfruns.d/metrics.json","Model: ""sequential""
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-21-39Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-21-30Z",2.0867,0.2251,1.9594,0.2702,50,1e-04,"sigmoid",30,1284,32,30,30,"runs/2024-12-23T21-21-30Z/tfruns.d/metrics.json","Model: ""sequential""
 ________________________________________________________________________________
 Layer (type)                        Output Shape                    Param #     
 ================================================================================
-flatten (Flatten)                   (None, 784)                     0           
+dense_2 (Dense)                     (None, 14)                      224         
 ________________________________________________________________________________
-dense_1 (Dense)                     (None, 32)                      25120       
+dropout_1 (Dropout)                 (None, 14)                      0           
 ________________________________________________________________________________
-dense (Dense)                       (None, 10)                      330         
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
 ================================================================================
-Total params: 25,450
-Trainable params: 25,450
+Total params: 1,790
+Trainable params: 1,790
 Non-trainable params: 0
-________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x0000028798B3ACF8>",0.00999999977648258,"build_model.R",2024-12-23 17:05:43.53173,2024-12-23 17:06:22.31074,TRUE,"
-> library(keras)
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x0000028804FE8EF0>",0.00100000004749745,"my_model.R",2024-12-23 21:21:31.45415,2024-12-23 21:21:39.2195,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
 
 > FLAGS <- flags(
 +   flag_integer(""units"", 128),
-+   flag_numeric(""learning_rate"", 0.001)
-+ )
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
 
 > build_model <- function() {
 +   model <- keras_model_sequential() %>%
-+     layer_flatten(input_shape = c(28, 28, 1)) %>%
-+     layer_dense(units =  .... [TRUNCATED] 
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
 
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
 > model <- build_model()
 
 > history <- model %>% fit(
-+   x_train, y_train,
-+   epochs = 10,
-+   validation_data = list(x_val, y_val)
-+ )","runs/2024-12-23T17-05-43Z/tfruns.d/source.tar.gz","local","training"
-"runs/2024-12-23T17-04-40Z",0.0093,0.9968,0.0877,0.9789,512,0.001,60000,32,10,10,"runs/2024-12-23T17-04-40Z/tfruns.d/metrics.json","Model: ""sequential""
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-21-30Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-21-23Z",2.0932,0.222,1.9627,0.2702,26,1e-04,"sigmoid",30,1284,32,30,30,"runs/2024-12-23T21-21-23Z/tfruns.d/metrics.json","Model: ""sequential""
 ________________________________________________________________________________
 Layer (type)                        Output Shape                    Param #     
 ================================================================================
-flatten (Flatten)                   (None, 784)                     0           
+dense_2 (Dense)                     (None, 14)                      224         
 ________________________________________________________________________________
-dense_1 (Dense)                     (None, 512)                     401920      
+dropout_1 (Dropout)                 (None, 14)                      0           
 ________________________________________________________________________________
-dense (Dense)                       (None, 10)                      5130        
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
 ================================================================================
-Total params: 407,050
-Trainable params: 407,050
+Total params: 1,046
+Trainable params: 1,046
 Non-trainable params: 0
-________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x0000028798774E48>",0.00100000004749745,"build_model.R",2024-12-23 17:04:40.38305,2024-12-23 17:05:43.28654,TRUE,"
-> library(keras)
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x0000028796992D30>",0.00100000004749745,"my_model.R",2024-12-23 21:21:24.39094,2024-12-23 21:21:30.93647,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
 
 > FLAGS <- flags(
 +   flag_integer(""units"", 128),
-+   flag_numeric(""learning_rate"", 0.001)
-+ )
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
 
 > build_model <- function() {
 +   model <- keras_model_sequential() %>%
-+     layer_flatten(input_shape = c(28, 28, 1)) %>%
-+     layer_dense(units =  .... [TRUNCATED] 
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
 
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
 > model <- build_model()
 
 > history <- model %>% fit(
-+   x_train, y_train,
-+   epochs = 10,
-+   validation_data = list(x_val, y_val)
-+ )","runs/2024-12-23T17-04-40Z/tfruns.d/source.tar.gz","local","training"
-"runs/2024-12-23T17-03-52Z",0.0115,0.9964,0.0775,0.9801,256,0.001,60000,32,10,10,"runs/2024-12-23T17-03-52Z/tfruns.d/metrics.json","Model: ""sequential""
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-21-23Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-21-16Z",1.9892,0.2523,1.8638,0.2919,50,0.01,"tanh",30,1284,32,30,30,"runs/2024-12-23T21-21-16Z/tfruns.d/metrics.json","Model: ""sequential""
 ________________________________________________________________________________
 Layer (type)                        Output Shape                    Param #     
 ================================================================================
-flatten (Flatten)                   (None, 784)                     0           
+dense_2 (Dense)                     (None, 14)                      224         
 ________________________________________________________________________________
-dense_1 (Dense)                     (None, 256)                     200960      
+dropout_1 (Dropout)                 (None, 14)                      0           
 ________________________________________________________________________________
-dense (Dense)                       (None, 10)                      2570        
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
 ================================================================================
-Total params: 203,530
-Trainable params: 203,530
+Total params: 1,790
+Trainable params: 1,790
 Non-trainable params: 0
-________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x000002879ACE3F60>",0.00100000004749745,"build_model.R",2024-12-23 17:03:52.65788,2024-12-23 17:04:40.12208,TRUE,"
-> library(keras)
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287F8FAC048>",0.00100000004749745,"my_model.R",2024-12-23 21:21:17.39833,2024-12-23 21:21:23.89451,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
 
 > FLAGS <- flags(
 +   flag_integer(""units"", 128),
-+   flag_numeric(""learning_rate"", 0.001)
-+ )
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
 
 > build_model <- function() {
 +   model <- keras_model_sequential() %>%
-+     layer_flatten(input_shape = c(28, 28, 1)) %>%
-+     layer_dense(units =  .... [TRUNCATED] 
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
 
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
 > model <- build_model()
 
 > history <- model %>% fit(
-+   x_train, y_train,
-+   epochs = 10,
-+   validation_data = list(x_val, y_val)
-+ )","runs/2024-12-23T17-03-52Z/tfruns.d/source.tar.gz","local","training"
-"runs/2024-12-23T17-03-09Z",0.0172,0.9947,0.0786,0.978,128,0.001,60000,32,10,10,"runs/2024-12-23T17-03-09Z/tfruns.d/metrics.json","Model: ""sequential""
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-21-16Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-21-10Z",2.0054,0.2695,1.8701,0.2733,26,0.01,"tanh",30,1284,32,30,30,"runs/2024-12-23T21-21-10Z/tfruns.d/metrics.json","Model: ""sequential""
 ________________________________________________________________________________
 Layer (type)                        Output Shape                    Param #     
 ================================================================================
-flatten (Flatten)                   (None, 784)                     0           
+dense_2 (Dense)                     (None, 14)                      224         
 ________________________________________________________________________________
-dense_1 (Dense)                     (None, 128)                     100480      
+dropout_1 (Dropout)                 (None, 14)                      0           
 ________________________________________________________________________________
-dense (Dense)                       (None, 10)                      1290        
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
 ================================================================================
-Total params: 101,770
-Trainable params: 101,770
+Total params: 1,046
+Trainable params: 1,046
 Non-trainable params: 0
-________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x000002879ACE3B70>",0.00100000004749745,"build_model.R",2024-12-23 17:03:09.692,2024-12-23 17:03:52.39718,TRUE,"
-> library(keras)
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287FAA94208>",0.00100000004749745,"my_model.R",2024-12-23 21:21:10.53722,2024-12-23 21:21:16.86654,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
 
 > FLAGS <- flags(
 +   flag_integer(""units"", 128),
-+   flag_numeric(""learning_rate"", 0.001)
-+ )
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
 
 > build_model <- function() {
 +   model <- keras_model_sequential() %>%
-+     layer_flatten(input_shape = c(28, 28, 1)) %>%
-+     layer_dense(units =  .... [TRUNCATED] 
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
 
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
 > model <- build_model()
 
 > history <- model %>% fit(
-+   x_train, y_train,
-+   epochs = 10,
-+   validation_data = list(x_val, y_val)
-+ )","runs/2024-12-23T17-03-09Z/tfruns.d/source.tar.gz","local","training"
-"runs/2024-12-23T17-02-28Z",0.0337,0.9897,0.094,0.9722,64,0.001,60000,32,10,10,"runs/2024-12-23T17-02-28Z/tfruns.d/metrics.json","Model: ""sequential""
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-21-10Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-21-03Z",1.9604,0.2819,1.8182,0.3075,50,0.001,"tanh",30,1284,32,30,30,"runs/2024-12-23T21-21-03Z/tfruns.d/metrics.json","Model: ""sequential""
 ________________________________________________________________________________
 Layer (type)                        Output Shape                    Param #     
 ================================================================================
-flatten (Flatten)                   (None, 784)                     0           
+dense_2 (Dense)                     (None, 14)                      224         
 ________________________________________________________________________________
-dense_1 (Dense)                     (None, 64)                      50240       
+dropout_1 (Dropout)                 (None, 14)                      0           
 ________________________________________________________________________________
-dense (Dense)                       (None, 10)                      650         
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
 ================================================================================
-Total params: 50,890
-Trainable params: 50,890
+Total params: 1,790
+Trainable params: 1,790
 Non-trainable params: 0
-________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x000002879A920518>",0.00100000004749745,"build_model.R",2024-12-23 17:02:29.18797,2024-12-23 17:03:09.45155,TRUE,"
-> library(keras)
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287F8F6BD30>",0.00100000004749745,"my_model.R",2024-12-23 21:21:03.64562,2024-12-23 21:21:10.04546,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
 
 > FLAGS <- flags(
 +   flag_integer(""units"", 128),
-+   flag_numeric(""learning_rate"", 0.001)
-+ )
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
 
 > build_model <- function() {
 +   model <- keras_model_sequential() %>%
-+     layer_flatten(input_shape = c(28, 28, 1)) %>%
-+     layer_dense(units =  .... [TRUNCATED] 
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
 
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
 > model <- build_model()
 
 > history <- model %>% fit(
-+   x_train, y_train,
-+   epochs = 10,
-+   validation_data = list(x_val, y_val)
-+ )","runs/2024-12-23T17-02-28Z/tfruns.d/source.tar.gz","local","training"
-"runs/2024-12-23T17-01-51Z",0.0726,0.9776,0.1094,0.9661,32,0.001,60000,32,10,10,"runs/2024-12-23T17-01-51Z/tfruns.d/metrics.json","Model: ""sequential""
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-21-03Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-20-56Z",2.0644,0.2329,1.9417,0.2702,26,0.001,"tanh",30,1284,32,30,30,"runs/2024-12-23T21-20-56Z/tfruns.d/metrics.json","Model: ""sequential""
 ________________________________________________________________________________
 Layer (type)                        Output Shape                    Param #     
 ================================================================================
-flatten (Flatten)                   (None, 784)                     0           
+dense_2 (Dense)                     (None, 14)                      224         
 ________________________________________________________________________________
-dense_1 (Dense)                     (None, 32)                      25120       
+dropout_1 (Dropout)                 (None, 14)                      0           
 ________________________________________________________________________________
-dense (Dense)                       (None, 10)                      330         
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
 ================================================================================
-Total params: 25,450
-Trainable params: 25,450
+Total params: 1,046
+Trainable params: 1,046
 Non-trainable params: 0
-________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x000002879A559470>",0.00100000004749745,"build_model.R",2024-12-23 17:01:51.51578,2024-12-23 17:02:28.92477,TRUE,"
-> library(keras)
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287FA29A588>",0.00100000004749745,"my_model.R",2024-12-23 21:20:56.67688,2024-12-23 21:21:03.19474,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
 
 > FLAGS <- flags(
 +   flag_integer(""units"", 128),
-+   flag_numeric(""learning_rate"", 0.001)
-+ )
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
 
 > build_model <- function() {
 +   model <- keras_model_sequential() %>%
-+     layer_flatten(input_shape = c(28, 28, 1)) %>%
-+     layer_dense(units =  .... [TRUNCATED] 
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
 
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
 > model <- build_model()
 
 > history <- model %>% fit(
-+   x_train, y_train,
-+   epochs = 10,
-+   validation_data = list(x_val, y_val)
-+ )","runs/2024-12-23T17-01-51Z/tfruns.d/source.tar.gz","local","training"
-"runs/2024-12-23T17-00-49Z",0.0527,0.9863,0.0755,0.9774,512,1e-04,60000,32,10,10,"runs/2024-12-23T17-00-49Z/tfruns.d/metrics.json","Model: ""sequential""
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-20-56Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-20-48Z",1.9795,0.3037,1.8494,0.3261,50,1e-04,"tanh",30,1284,32,30,30,"runs/2024-12-23T21-20-48Z/tfruns.d/metrics.json","Model: ""sequential""
 ________________________________________________________________________________
 Layer (type)                        Output Shape                    Param #     
 ================================================================================
-flatten (Flatten)                   (None, 784)                     0           
+dense_2 (Dense)                     (None, 14)                      224         
 ________________________________________________________________________________
-dense_1 (Dense)                     (None, 512)                     401920      
+dropout_1 (Dropout)                 (None, 14)                      0           
 ________________________________________________________________________________
-dense (Dense)                       (None, 10)                      5130        
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
 ================================================================================
-Total params: 407,050
-Trainable params: 407,050
+Total params: 1,790
+Trainable params: 1,790
 Non-trainable params: 0
-________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x000002879A1A24E0>",9.99999974737875e-05,"build_model.R",2024-12-23 17:00:49.36255,2024-12-23 17:01:51.32468,TRUE,"
-> library(keras)
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x0000028802238F28>",0.00100000004749745,"my_model.R",2024-12-23 21:20:49.00454,2024-12-23 21:20:56.20981,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
 
 > FLAGS <- flags(
 +   flag_integer(""units"", 128),
-+   flag_numeric(""learning_rate"", 0.001)
-+ )
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
 
 > build_model <- function() {
 +   model <- keras_model_sequential() %>%
-+     layer_flatten(input_shape = c(28, 28, 1)) %>%
-+     layer_dense(units =  .... [TRUNCATED] 
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
 
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
 > model <- build_model()
 
 > history <- model %>% fit(
-+   x_train, y_train,
-+   epochs = 10,
-+   validation_data = list(x_val, y_val)
-+ )","runs/2024-12-23T17-00-49Z/tfruns.d/source.tar.gz","local","training"
-"runs/2024-12-23T17-00-00Z",0.0807,0.978,0.0951,0.9714,256,1e-04,60000,32,10,10,"runs/2024-12-23T17-00-00Z/tfruns.d/metrics.json","Model: ""sequential""
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-20-48Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-20-40Z",2.046,0.2329,1.9108,0.2702,26,1e-04,"tanh",30,1284,32,30,30,"runs/2024-12-23T21-20-40Z/tfruns.d/metrics.json","Model: ""sequential""
 ________________________________________________________________________________
 Layer (type)                        Output Shape                    Param #     
 ================================================================================
-flatten (Flatten)                   (None, 784)                     0           
+dense_2 (Dense)                     (None, 14)                      224         
 ________________________________________________________________________________
-dense_1 (Dense)                     (None, 256)                     200960      
+dropout_1 (Dropout)                 (None, 14)                      0           
 ________________________________________________________________________________
-dense (Dense)                       (None, 10)                      2570        
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
 ================================================================================
-Total params: 203,530
-Trainable params: 203,530
+Total params: 1,046
+Trainable params: 1,046
 Non-trainable params: 0
-________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x000002879434A518>",9.99999974737875e-05,"build_model.R",2024-12-23 17:00:00.87195,2024-12-23 17:00:49.16634,TRUE,"
-> library(keras)
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287C15328D0>",0.00100000004749745,"my_model.R",2024-12-23 21:20:41.45947,2024-12-23 21:20:48.47444,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
 
 > FLAGS <- flags(
 +   flag_integer(""units"", 128),
-+   flag_numeric(""learning_rate"", 0.001)
-+ )
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
 
 > build_model <- function() {
 +   model <- keras_model_sequential() %>%
-+     layer_flatten(input_shape = c(28, 28, 1)) %>%
-+     layer_dense(units =  .... [TRUNCATED] 
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
 
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
 > model <- build_model()
 
 > history <- model %>% fit(
-+   x_train, y_train,
-+   epochs = 10,
-+   validation_data = list(x_val, y_val)
-+ )","runs/2024-12-23T17-00-00Z/tfruns.d/source.tar.gz","local","training"
-"runs/2024-12-23T16-59-20Z",0.1091,0.9698,0.1153,0.9656,128,1e-04,60000,32,10,10,"runs/2024-12-23T16-59-20Z/tfruns.d/metrics.json","Model: ""sequential""
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-20-40Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-20-33Z",2.0453,0.2695,1.9259,0.3012,50,0.01,"relu",30,1284,32,30,30,"runs/2024-12-23T21-20-33Z/tfruns.d/metrics.json","Model: ""sequential""
 ________________________________________________________________________________
 Layer (type)                        Output Shape                    Param #     
 ================================================================================
-flatten (Flatten)                   (None, 784)                     0           
+dense_2 (Dense)                     (None, 14)                      224         
 ________________________________________________________________________________
-dense_1 (Dense)                     (None, 128)                     100480      
+dropout_1 (Dropout)                 (None, 14)                      0           
 ________________________________________________________________________________
-dense (Dense)                       (None, 10)                      1290        
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
 ================================================================================
-Total params: 101,770
-Trainable params: 101,770
+Total params: 1,790
+Trainable params: 1,790
 Non-trainable params: 0
-________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x0000028791CF7EF0>",9.99999974737875e-05,"build_model.R",2024-12-23 16:59:20.85975,2024-12-23 17:00:00.66188,TRUE,"
-> library(keras)
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x0000028802C480F0>",0.00100000004749745,"my_model.R",2024-12-23 21:20:34.1326,2024-12-23 21:20:40.96219,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
 
 > FLAGS <- flags(
 +   flag_integer(""units"", 128),
-+   flag_numeric(""learning_rate"", 0.001)
-+ )
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
 
 > build_model <- function() {
 +   model <- keras_model_sequential() %>%
-+     layer_flatten(input_shape = c(28, 28, 1)) %>%
-+     layer_dense(units =  .... [TRUNCATED] 
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
 
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
 > model <- build_model()
 
 > history <- model %>% fit(
-+   x_train, y_train,
-+   epochs = 10,
-+   validation_data = list(x_val, y_val)
-+ )","runs/2024-12-23T16-59-20Z/tfruns.d/source.tar.gz","local","training"
-"runs/2024-12-23T16-58-41Z",0.1483,0.9586,0.1477,0.9557,64,1e-04,60000,32,10,10,"runs/2024-12-23T16-58-41Z/tfruns.d/metrics.json","Model: ""sequential""
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-20-33Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-20-26Z",2.0653,0.2484,1.946,0.2702,26,0.01,"relu",30,1284,32,30,30,"runs/2024-12-23T21-20-26Z/tfruns.d/metrics.json","Model: ""sequential""
 ________________________________________________________________________________
 Layer (type)                        Output Shape                    Param #     
 ================================================================================
-flatten (Flatten)                   (None, 784)                     0           
+dense_2 (Dense)                     (None, 14)                      224         
 ________________________________________________________________________________
-dense_1 (Dense)                     (None, 64)                      50240       
+dropout_1 (Dropout)                 (None, 14)                      0           
 ________________________________________________________________________________
-dense (Dense)                       (None, 10)                      650         
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
 ================================================================================
-Total params: 50,890
-Trainable params: 50,890
+Total params: 1,046
+Trainable params: 1,046
 Non-trainable params: 0
-________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x00000287906A8208>",9.99999974737875e-05,"build_model.R",2024-12-23 16:58:41.95597,2024-12-23 16:59:20.68651,TRUE,"
-> library(keras)
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287ED8A1E10>",0.00100000004749745,"my_model.R",2024-12-23 21:20:27.28844,2024-12-23 21:20:33.68949,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
 
 > FLAGS <- flags(
 +   flag_integer(""units"", 128),
-+   flag_numeric(""learning_rate"", 0.001)
-+ )
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
 
 > build_model <- function() {
 +   model <- keras_model_sequential() %>%
-+     layer_flatten(input_shape = c(28, 28, 1)) %>%
-+     layer_dense(units =  .... [TRUNCATED] 
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
 
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
 > model <- build_model()
 
 > history <- model %>% fit(
-+   x_train, y_train,
-+   epochs = 10,
-+   validation_data = list(x_val, y_val)
-+ )","runs/2024-12-23T16-58-41Z/tfruns.d/source.tar.gz","local","training"
-"runs/2024-12-23T16-58-02Z",0.2112,0.9409,0.2094,0.9401,32,1e-04,60000,32,10,10,"runs/2024-12-23T16-58-02Z/tfruns.d/metrics.json","Model: ""sequential_4""
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-20-26Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-20-19Z",1.9824,0.2609,1.8691,0.2764,50,0.001,"relu",30,1284,32,30,30,"runs/2024-12-23T21-20-19Z/tfruns.d/metrics.json","Model: ""sequential""
 ________________________________________________________________________________
 Layer (type)                        Output Shape                    Param #     
 ================================================================================
-flatten_2 (Flatten)                 (None, 784)                     0           
+dense_2 (Dense)                     (None, 14)                      224         
 ________________________________________________________________________________
-dense_11 (Dense)                    (None, 32)                      25120       
+dropout_1 (Dropout)                 (None, 14)                      0           
 ________________________________________________________________________________
-dense_10 (Dense)                    (None, 10)                      330         
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
 ================================================================================
-Total params: 25,450
-Trainable params: 25,450
+Total params: 1,790
+Trainable params: 1,790
 Non-trainable params: 0
-________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x0000028788ACD438>",9.99999974737875e-05,"build_model.R",2024-12-23 16:58:03.7033,2024-12-23 16:58:41.60728,TRUE,"
-> library(keras)
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x0000028798BABF98>",0.00100000004749745,"my_model.R",2024-12-23 21:20:20.03489,2024-12-23 21:20:26.77451,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
 
 > FLAGS <- flags(
 +   flag_integer(""units"", 128),
-+   flag_numeric(""learning_rate"", 0.001)
-+ )
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
 
 > build_model <- function() {
 +   model <- keras_model_sequential() %>%
-+     layer_flatten(input_shape = c(28, 28, 1)) %>%
-+     layer_dense(units =  .... [TRUNCATED] 
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
 
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
 > model <- build_model()
 
 > history <- model %>% fit(
-+   x_train, y_train,
-+   epochs = 10,
-+   validation_data = list(x_val, y_val)
-+ )","runs/2024-12-23T16-58-02Z/tfruns.d/source.tar.gz","local","training"
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-20-19Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-20-12Z",2.0669,0.2344,1.956,0.2733,26,0.001,"relu",30,1284,32,30,30,"runs/2024-12-23T21-20-12Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x000002880EA01940>",0.00100000004749745,"my_model.R",2024-12-23 21:20:12.62201,2024-12-23 21:20:19.55165,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-20-12Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-20-04Z",2.0198,0.2578,1.8836,0.2795,50,1e-04,"relu",30,1284,32,30,30,"runs/2024-12-23T21-20-04Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x000002880C8FA240>",0.00100000004749745,"my_model.R",2024-12-23 21:20:05.18446,2024-12-23 21:20:12.14533,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-20-04Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-19-57Z",2.0125,0.2804,1.88,0.2888,26,1e-04,"relu",30,1284,32,30,30,"runs/2024-12-23T21-19-57Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x000002879A9B1EF0>",0.00100000004749745,"my_model.R",2024-12-23 21:19:57.79999,2024-12-23 21:20:04.70242,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-19-57Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-19-51Z",2.1063,0.2017,1.9649,0.2702,50,0.01,"sigmoid",20,1284,32,20,20,"runs/2024-12-23T21-19-51Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287FA077908>",0.00100000004749745,"my_model.R",2024-12-23 21:19:52.10016,2024-12-23 21:19:57.2769,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-19-51Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-19-46Z",2.1,0.2243,1.9687,0.2702,26,0.01,"sigmoid",20,1284,32,20,20,"runs/2024-12-23T21-19-46Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x000002879A95A2E8>",0.00100000004749745,"my_model.R",2024-12-23 21:19:46.67391,2024-12-23 21:19:51.63652,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-19-46Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-19-39Z",2.0876,0.2298,1.9557,0.2702,50,0.001,"sigmoid",20,1284,32,20,20,"runs/2024-12-23T21-19-39Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287A70E9EF0>",0.00100000004749745,"my_model.R",2024-12-23 21:19:39.48277,2024-12-23 21:19:46.24625,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-19-39Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-19-32Z",2.1027,0.2173,1.963,0.2702,26,0.001,"sigmoid",20,1284,32,20,20,"runs/2024-12-23T21-19-32Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x0000028842F6B4E0>",0.00100000004749745,"my_model.R",2024-12-23 21:19:32.48178,2024-12-23 21:19:39.05559,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-19-32Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-19-27Z",2.1056,0.2181,1.9636,0.2702,50,1e-04,"sigmoid",20,1284,32,20,20,"runs/2024-12-23T21-19-27Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x000002884297BEF0>",0.00100000004749745,"my_model.R",2024-12-23 21:19:27.54649,2024-12-23 21:19:32.10153,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-19-27Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-19-21Z",2.0935,0.2305,1.9588,0.2702,26,1e-04,"sigmoid",20,1284,32,20,20,"runs/2024-12-23T21-19-21Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000288403C6E10>",0.00100000004749745,"my_model.R",2024-12-23 21:19:22.32511,2024-12-23 21:19:27.15452,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-19-21Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-19-16Z",2.0161,0.2547,1.8934,0.2702,50,0.01,"tanh",20,1284,32,20,20,"runs/2024-12-23T21-19-16Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x000002882CB868D0>",0.00100000004749745,"my_model.R",2024-12-23 21:19:17.29504,2024-12-23 21:19:21.95555,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-19-16Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-19-12Z",2.0611,0.2375,1.9347,0.2702,26,0.01,"tanh",20,1284,32,20,20,"runs/2024-12-23T21-19-12Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x000002880EA68F60>",0.00100000004749745,"my_model.R",2024-12-23 21:19:12.39373,2024-12-23 21:19:16.9062,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-19-12Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-19-07Z",2.0477,0.2461,1.9216,0.2702,50,0.001,"tanh",20,1284,32,20,20,"runs/2024-12-23T21-19-07Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x000002880E964A58>",0.00100000004749745,"my_model.R",2024-12-23 21:19:07.34584,2024-12-23 21:19:12.04672,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-19-07Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-19-02Z",2.042,0.2422,1.9065,0.2702,26,0.001,"tanh",20,1284,32,20,20,"runs/2024-12-23T21-19-02Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x000002880CF3F828>",0.00100000004749745,"my_model.R",2024-12-23 21:19:02.49725,2024-12-23 21:19:06.9938,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-19-02Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-18-56Z",2.0475,0.2453,1.9359,0.2826,50,1e-04,"tanh",20,1284,32,20,20,"runs/2024-12-23T21-18-56Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287C4C251D0>",0.00100000004749745,"my_model.R",2024-12-23 21:18:56.88557,2024-12-23 21:19:02.17898,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-18-56Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-18-51Z",2.0724,0.2329,1.9436,0.2795,26,1e-04,"tanh",20,1284,32,20,20,"runs/2024-12-23T21-18-51Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000288059F4828>",0.00100000004749745,"my_model.R",2024-12-23 21:18:52.09839,2024-12-23 21:18:56.51676,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-18-51Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-18-47Z",2.0864,0.2227,1.9614,0.2702,50,0.01,"relu",20,1284,32,20,20,"runs/2024-12-23T21-18-47Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x0000028805382470>",0.00100000004749745,"my_model.R",2024-12-23 21:18:47.53485,2024-12-23 21:18:51.79175,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-18-47Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-18-42Z",2.0925,0.2266,1.963,0.2702,26,0.01,"relu",20,1284,32,20,20,"runs/2024-12-23T21-18-42Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x0000028802D44EB8>",0.00100000004749745,"my_model.R",2024-12-23 21:18:42.70239,2024-12-23 21:18:47.22094,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-18-42Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-18-37Z",2.0644,0.2383,1.959,0.2702,50,0.001,"relu",20,1284,32,20,20,"runs/2024-12-23T21-18-37Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x0000028802713CF8>",0.00100000004749745,"my_model.R",2024-12-23 21:18:37.89009,2024-12-23 21:18:42.38926,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-18-37Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-18-32Z",2.1029,0.2251,1.9828,0.2702,26,0.001,"relu",20,1284,32,20,20,"runs/2024-12-23T21-18-32Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000288020DF828>",0.00100000004749745,"my_model.R",2024-12-23 21:18:33.06528,2024-12-23 21:18:37.588,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-18-32Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-18-27Z",2.053,0.25,1.9335,0.2826,50,1e-04,"relu",20,1284,32,20,20,"runs/2024-12-23T21-18-27Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287FA8D8EF0>",0.00100000004749745,"my_model.R",2024-12-23 21:18:28.18634,2024-12-23 21:18:32.74559,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-18-27Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-18-22Z",2.0844,0.2157,1.9576,0.2795,26,1e-04,"relu",20,1284,32,20,20,"runs/2024-12-23T21-18-22Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287F0C57B00>",0.00100000004749745,"my_model.R",2024-12-23 21:18:23.08909,2024-12-23 21:18:27.88285,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-18-22Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-18-19Z",2.1258,0.2087,1.9637,0.2702,50,0.01,"sigmoid",10,1284,32,10,10,"runs/2024-12-23T21-18-19Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287F0B599E8>",0.00100000004749745,"my_model.R",2024-12-23 21:18:19.69107,2024-12-23 21:18:22.80173,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-18-19Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-18-16Z",2.1433,0.2056,1.9717,0.2702,26,0.01,"sigmoid",10,1284,32,10,10,"runs/2024-12-23T21-18-16Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287F0B95EF0>",0.00100000004749745,"my_model.R",2024-12-23 21:18:16.80792,2024-12-23 21:18:19.41048,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-18-16Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-18-13Z",2.1206,0.2009,1.9653,0.2702,50,0.001,"sigmoid",10,1284,32,10,10,"runs/2024-12-23T21-18-13Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287CCD7F6D8>",0.00100000004749745,"my_model.R",2024-12-23 21:18:13.39463,2024-12-23 21:18:16.51532,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-18-13Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-18-10Z",2.1084,0.2079,1.9705,0.2702,26,0.001,"sigmoid",10,1284,32,10,10,"runs/2024-12-23T21-18-10Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287CC96FD30>",0.00100000004749745,"my_model.R",2024-12-23 21:18:10.48391,2024-12-23 21:18:13.12082,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-18-10Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-18-07Z",2.1166,0.1908,1.9669,0.2702,50,1e-04,"sigmoid",10,1284,32,10,10,"runs/2024-12-23T21-18-07Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287C4B22D68>",0.00100000004749745,"my_model.R",2024-12-23 21:18:07.43425,2024-12-23 21:18:10.21982,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-18-07Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-18-04Z",2.1164,0.2142,1.9657,0.2702,26,1e-04,"sigmoid",10,1284,32,10,10,"runs/2024-12-23T21-18-04Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x000002879BC64080>",0.00100000004749745,"my_model.R",2024-12-23 21:18:04.44055,2024-12-23 21:18:07.17092,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-18-04Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-18-00Z",2.115,0.2196,1.9715,0.2702,50,0.01,"tanh",10,1284,32,10,10,"runs/2024-12-23T21-18-00Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287BA1BFCC0>",0.00100000004749745,"my_model.R",2024-12-23 21:18:01.06705,2024-12-23 21:18:04.18076,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-18-00Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-17-57Z",2.1086,0.2095,1.9628,0.2702,26,0.01,"tanh",10,1284,32,10,10,"runs/2024-12-23T21-17-57Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287AB1B5EF0>",0.00100000004749745,"my_model.R",2024-12-23 21:17:58.08285,2024-12-23 21:18:00.74133,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-17-57Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-17-54Z",2.1054,0.2188,1.9604,0.2702,50,0.001,"tanh",10,1284,32,10,10,"runs/2024-12-23T21-17-54Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287A78EA940>",0.00100000004749745,"my_model.R",2024-12-23 21:17:55.01834,2024-12-23 21:17:57.82629,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-17-54Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-17-51Z",2.1176,0.2134,1.9612,0.2702,26,0.001,"tanh",10,1284,32,10,10,"runs/2024-12-23T21-17-51Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x000002879FDF1C88>",0.00100000004749745,"my_model.R",2024-12-23 21:17:52.17389,2024-12-23 21:17:54.76832,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-17-51Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-17-49Z",2.1029,0.2329,1.9638,0.2702,50,1e-04,"tanh",10,1284,32,10,10,"runs/2024-12-23T21-17-49Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x000002879BAEDA20>",0.00100000004749745,"my_model.R",2024-12-23 21:17:49.28458,2024-12-23 21:17:51.9232,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-17-49Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-17-45Z",2.1159,0.2056,1.9637,0.2702,26,1e-04,"tanh",10,1284,32,10,10,"runs/2024-12-23T21-17-45Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x000002879B046C18>",0.00100000004749745,"my_model.R",2024-12-23 21:17:46.15222,2024-12-23 21:17:49.04439,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-17-45Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-17-42Z",2.1098,0.2243,1.984,0.2702,50,0.01,"relu",10,1284,32,10,10,"runs/2024-12-23T21-17-42Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x000002879A3CD860>",0.00100000004749745,"my_model.R",2024-12-23 21:17:43.12065,2024-12-23 21:17:45.91233,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-17-42Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-17-40Z",2.1242,0.2142,1.9856,0.2702,26,0.01,"relu",10,1284,32,10,10,"runs/2024-12-23T21-17-40Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x0000028797FE7C88>",0.00100000004749745,"my_model.R",2024-12-23 21:17:40.30169,2024-12-23 21:17:42.88035,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-17-40Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-17-37Z",2.1074,0.2196,1.9797,0.2702,50,0.001,"relu",10,1284,32,10,10,"runs/2024-12-23T21-17-37Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x0000028796CF49B0>",0.00100000004749745,"my_model.R",2024-12-23 21:17:37.42876,2024-12-23 21:17:40.07116,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-17-37Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-17-33Z",2.1468,0.2134,2.0028,0.2702,26,0.001,"relu",10,1284,32,10,10,"runs/2024-12-23T21-17-33Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x00000287969CCDA0>",0.00100000004749745,"my_model.R",2024-12-23 21:17:34.16048,2024-12-23 21:17:37.20538,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-17-33Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-17-30Z",2.1202,0.2282,1.9744,0.2702,50,1e-04,"relu",10,1284,32,10,10,"runs/2024-12-23T21-17-30Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 50)                      750         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 50)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      816         
+================================================================================
+Total params: 1,790
+Trainable params: 1,790
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x000002879045CFD0>",0.00100000004749745,"my_model.R",2024-12-23 21:17:30.79608,2024-12-23 21:17:33.93562,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-17-30Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T21-17-27Z",2.1333,0.2111,1.9863,0.2702,26,1e-04,"relu",10,1284,32,10,10,"runs/2024-12-23T21-17-27Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+dense_2 (Dense)                     (None, 14)                      224         
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 14)                      0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 26)                      390         
+________________________________________________________________________________
+dropout (Dropout)                   (None, 26)                      0           
+________________________________________________________________________________
+dense (Dense)                       (None, 16)                      432         
+================================================================================
+Total params: 1,046
+Trainable params: 1,046
+Non-trainable params: 0
+________________________________________________________________________________","categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.rmsprop.RMSprop object at 0x0000028799038A58>",0.00100000004749745,"my_model.R",2024-12-23 21:17:27.85416,2024-12-23 21:17:30.56313,TRUE,"
+> # Figure out the number of neurons in each layer
+> # how big to make the input layer # https://stats.stackexchange.com/questions/181/how-to-choose-t .... [TRUNCATED] 
+
+> # How big to make the hidden layer# # from # https://medium.com/geekculture/introduction-to-neural-network-2f8b8221fbd3#:~:text=Number%20of%20Neuron .... [TRUNCATED] 
+
+> # How big to make the output layer
+> num_output_neurons <- length(unique(my_metadata[,""env_package.data.body_site""]))
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001),
++   flag_string(""activation"", ""relu""),
++   flag_integer(""e ..."" ... [TRUNCATED] 
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_dense(units = num_input_neurons, activation = 'relu', input_shape  .... [TRUNCATED] 
+
+> #print(paste(""Dim all_labels"", dim(all_labels)))
+> 
+> model <- build_model()
+
+> history <- model %>% fit(
++   all_data, all_labels,
++   epochs = FLAGS$epochs,
++   validation_split = 0.2
++ )
+
+> ## Calculate some custom metrics validation accuracy 
+> #avg_val_accuracy <- mean(history$metrics$val_accuracy) # avg value accuracy
+> #write_run_me .... [TRUNCATED] ","runs/2024-12-23T21-17-27Z/tfruns.d/source.tar.gz","local","training"

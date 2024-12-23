@@ -189,9 +189,9 @@ training_data <- my_tidy_data[indices, ]
 testing_data     <- my_tidy_data[-indices, ]
 # encode metadata as factor
 training_data$env_package.data.body_site <- factor(training_data$env_package.data.body_site)
-testing_data$env_package.data.body_site <- factor( testing_data$env_package.data.body_site)
+#testing_data$env_package.data.body_site <- factor( testing_data$env_package.data.body_site)
 
-# Prepare the data
+## Prepare the data
 train_labels <- to_categorical(as.numeric(training_data$env_package.data.body_site) - 1)
 train_data <- as.matrix(training_data %>% select(-env_package.data.body_site))
 rownames(train_data) <- 1:nrow(train_data) # Keras doesn't like rownames
@@ -242,7 +242,7 @@ model %>% compile(
 
 # Train the model 
 #history <- model %>% fit( train_data, train_labels, epochs = 1000 )
-history <- model %>% fit( all_data, all_labels, epochs = 5000, batch_size = 128, validation_split = 0.2 ) 
+history <- model %>% fit( all_data, all_labels, epochs = 10, batch_size = 128, validation_split = 0.2 ) 
 #history <- model %>% fit( X, y, epochs = 20, validation_split = 0.2 ) 
 # plot(history)
 
