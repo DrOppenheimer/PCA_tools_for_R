@@ -1,0 +1,496 @@
+"run_dir","metric_loss","metric_accuracy","metric_val_loss","metric_val_accuracy","flag_units","flag_learning_rate","samples","batch_size","epochs","epochs_completed","metrics","model","loss_function","optimizer","learning_rate","script","start","end","completed","output","source_code","context","type"
+"runs/2024-12-23T17-08-40Z",0.0978,0.9784,0.2486,0.9666,512,0.01,60000,32,10,10,"runs/2024-12-23T17-08-40Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+flatten (Flatten)                   (None, 784)                     0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 512)                     401920      
+________________________________________________________________________________
+dense (Dense)                       (None, 10)                      5130        
+================================================================================
+Total params: 407,050
+Trainable params: 407,050
+Non-trainable params: 0
+________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x0000028799851518>",0.00999999977648258,"build_model.R",2024-12-23 17:08:41.1479,2024-12-23 17:09:45.69985,TRUE,"
+> library(keras)
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001)
++ )
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_flatten(input_shape = c(28, 28, 1)) %>%
++     layer_dense(units =  .... [TRUNCATED] 
+
+> model <- build_model()
+
+> history <- model %>% fit(
++   x_train, y_train,
++   epochs = 10,
++   validation_data = list(x_val, y_val)
++ )","runs/2024-12-23T17-08-40Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T17-07-49Z",0.0955,0.9777,0.2367,0.9667,256,0.01,60000,32,10,10,"runs/2024-12-23T17-07-49Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+flatten (Flatten)                   (None, 784)                     0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 256)                     200960      
+________________________________________________________________________________
+dense (Dense)                       (None, 10)                      2570        
+================================================================================
+Total params: 203,530
+Trainable params: 203,530
+Non-trainable params: 0
+________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x000002879884C5C0>",0.00999999977648258,"build_model.R",2024-12-23 17:07:50.00383,2024-12-23 17:08:40.83936,TRUE,"
+> library(keras)
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001)
++ )
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_flatten(input_shape = c(28, 28, 1)) %>%
++     layer_dense(units =  .... [TRUNCATED] 
+
+> model <- build_model()
+
+> history <- model %>% fit(
++   x_train, y_train,
++   epochs = 10,
++   validation_data = list(x_val, y_val)
++ )","runs/2024-12-23T17-07-49Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T17-07-02Z",0.0985,0.977,0.2578,0.9597,128,0.01,60000,32,10,10,"runs/2024-12-23T17-07-02Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+flatten (Flatten)                   (None, 784)                     0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 128)                     100480      
+________________________________________________________________________________
+dense (Dense)                       (None, 10)                      1290        
+================================================================================
+Total params: 101,770
+Trainable params: 101,770
+Non-trainable params: 0
+________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x00000287992C9748>",0.00999999977648258,"build_model.R",2024-12-23 17:07:03.22074,2024-12-23 17:07:49.70288,TRUE,"
+> library(keras)
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001)
++ )
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_flatten(input_shape = c(28, 28, 1)) %>%
++     layer_dense(units =  .... [TRUNCATED] 
+
+> model <- build_model()
+
+> history <- model %>% fit(
++   x_train, y_train,
++   epochs = 10,
++   validation_data = list(x_val, y_val)
++ )","runs/2024-12-23T17-07-02Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T17-06-22Z",0.0999,0.975,0.2235,0.9579,64,0.01,60000,32,10,10,"runs/2024-12-23T17-06-22Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+flatten (Flatten)                   (None, 784)                     0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 64)                      50240       
+________________________________________________________________________________
+dense (Dense)                       (None, 10)                      650         
+================================================================================
+Total params: 50,890
+Trainable params: 50,890
+Non-trainable params: 0
+________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x0000028798F04668>",0.00999999977648258,"build_model.R",2024-12-23 17:06:22.58077,2024-12-23 17:07:02.95416,TRUE,"
+> library(keras)
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001)
++ )
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_flatten(input_shape = c(28, 28, 1)) %>%
++     layer_dense(units =  .... [TRUNCATED] 
+
+> model <- build_model()
+
+> history <- model %>% fit(
++   x_train, y_train,
++   epochs = 10,
++   validation_data = list(x_val, y_val)
++ )","runs/2024-12-23T17-06-22Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T17-05-43Z",0.127,0.9635,0.1959,0.9562,32,0.01,60000,32,10,10,"runs/2024-12-23T17-05-43Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+flatten (Flatten)                   (None, 784)                     0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 32)                      25120       
+________________________________________________________________________________
+dense (Dense)                       (None, 10)                      330         
+================================================================================
+Total params: 25,450
+Trainable params: 25,450
+Non-trainable params: 0
+________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x0000028798B3ACF8>",0.00999999977648258,"build_model.R",2024-12-23 17:05:43.53173,2024-12-23 17:06:22.31074,TRUE,"
+> library(keras)
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001)
++ )
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_flatten(input_shape = c(28, 28, 1)) %>%
++     layer_dense(units =  .... [TRUNCATED] 
+
+> model <- build_model()
+
+> history <- model %>% fit(
++   x_train, y_train,
++   epochs = 10,
++   validation_data = list(x_val, y_val)
++ )","runs/2024-12-23T17-05-43Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T17-04-40Z",0.0093,0.9968,0.0877,0.9789,512,0.001,60000,32,10,10,"runs/2024-12-23T17-04-40Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+flatten (Flatten)                   (None, 784)                     0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 512)                     401920      
+________________________________________________________________________________
+dense (Dense)                       (None, 10)                      5130        
+================================================================================
+Total params: 407,050
+Trainable params: 407,050
+Non-trainable params: 0
+________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x0000028798774E48>",0.00100000004749745,"build_model.R",2024-12-23 17:04:40.38305,2024-12-23 17:05:43.28654,TRUE,"
+> library(keras)
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001)
++ )
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_flatten(input_shape = c(28, 28, 1)) %>%
++     layer_dense(units =  .... [TRUNCATED] 
+
+> model <- build_model()
+
+> history <- model %>% fit(
++   x_train, y_train,
++   epochs = 10,
++   validation_data = list(x_val, y_val)
++ )","runs/2024-12-23T17-04-40Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T17-03-52Z",0.0115,0.9964,0.0775,0.9801,256,0.001,60000,32,10,10,"runs/2024-12-23T17-03-52Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+flatten (Flatten)                   (None, 784)                     0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 256)                     200960      
+________________________________________________________________________________
+dense (Dense)                       (None, 10)                      2570        
+================================================================================
+Total params: 203,530
+Trainable params: 203,530
+Non-trainable params: 0
+________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x000002879ACE3F60>",0.00100000004749745,"build_model.R",2024-12-23 17:03:52.65788,2024-12-23 17:04:40.12208,TRUE,"
+> library(keras)
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001)
++ )
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_flatten(input_shape = c(28, 28, 1)) %>%
++     layer_dense(units =  .... [TRUNCATED] 
+
+> model <- build_model()
+
+> history <- model %>% fit(
++   x_train, y_train,
++   epochs = 10,
++   validation_data = list(x_val, y_val)
++ )","runs/2024-12-23T17-03-52Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T17-03-09Z",0.0172,0.9947,0.0786,0.978,128,0.001,60000,32,10,10,"runs/2024-12-23T17-03-09Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+flatten (Flatten)                   (None, 784)                     0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 128)                     100480      
+________________________________________________________________________________
+dense (Dense)                       (None, 10)                      1290        
+================================================================================
+Total params: 101,770
+Trainable params: 101,770
+Non-trainable params: 0
+________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x000002879ACE3B70>",0.00100000004749745,"build_model.R",2024-12-23 17:03:09.692,2024-12-23 17:03:52.39718,TRUE,"
+> library(keras)
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001)
++ )
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_flatten(input_shape = c(28, 28, 1)) %>%
++     layer_dense(units =  .... [TRUNCATED] 
+
+> model <- build_model()
+
+> history <- model %>% fit(
++   x_train, y_train,
++   epochs = 10,
++   validation_data = list(x_val, y_val)
++ )","runs/2024-12-23T17-03-09Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T17-02-28Z",0.0337,0.9897,0.094,0.9722,64,0.001,60000,32,10,10,"runs/2024-12-23T17-02-28Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+flatten (Flatten)                   (None, 784)                     0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 64)                      50240       
+________________________________________________________________________________
+dense (Dense)                       (None, 10)                      650         
+================================================================================
+Total params: 50,890
+Trainable params: 50,890
+Non-trainable params: 0
+________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x000002879A920518>",0.00100000004749745,"build_model.R",2024-12-23 17:02:29.18797,2024-12-23 17:03:09.45155,TRUE,"
+> library(keras)
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001)
++ )
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_flatten(input_shape = c(28, 28, 1)) %>%
++     layer_dense(units =  .... [TRUNCATED] 
+
+> model <- build_model()
+
+> history <- model %>% fit(
++   x_train, y_train,
++   epochs = 10,
++   validation_data = list(x_val, y_val)
++ )","runs/2024-12-23T17-02-28Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T17-01-51Z",0.0726,0.9776,0.1094,0.9661,32,0.001,60000,32,10,10,"runs/2024-12-23T17-01-51Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+flatten (Flatten)                   (None, 784)                     0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 32)                      25120       
+________________________________________________________________________________
+dense (Dense)                       (None, 10)                      330         
+================================================================================
+Total params: 25,450
+Trainable params: 25,450
+Non-trainable params: 0
+________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x000002879A559470>",0.00100000004749745,"build_model.R",2024-12-23 17:01:51.51578,2024-12-23 17:02:28.92477,TRUE,"
+> library(keras)
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001)
++ )
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_flatten(input_shape = c(28, 28, 1)) %>%
++     layer_dense(units =  .... [TRUNCATED] 
+
+> model <- build_model()
+
+> history <- model %>% fit(
++   x_train, y_train,
++   epochs = 10,
++   validation_data = list(x_val, y_val)
++ )","runs/2024-12-23T17-01-51Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T17-00-49Z",0.0527,0.9863,0.0755,0.9774,512,1e-04,60000,32,10,10,"runs/2024-12-23T17-00-49Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+flatten (Flatten)                   (None, 784)                     0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 512)                     401920      
+________________________________________________________________________________
+dense (Dense)                       (None, 10)                      5130        
+================================================================================
+Total params: 407,050
+Trainable params: 407,050
+Non-trainable params: 0
+________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x000002879A1A24E0>",9.99999974737875e-05,"build_model.R",2024-12-23 17:00:49.36255,2024-12-23 17:01:51.32468,TRUE,"
+> library(keras)
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001)
++ )
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_flatten(input_shape = c(28, 28, 1)) %>%
++     layer_dense(units =  .... [TRUNCATED] 
+
+> model <- build_model()
+
+> history <- model %>% fit(
++   x_train, y_train,
++   epochs = 10,
++   validation_data = list(x_val, y_val)
++ )","runs/2024-12-23T17-00-49Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T17-00-00Z",0.0807,0.978,0.0951,0.9714,256,1e-04,60000,32,10,10,"runs/2024-12-23T17-00-00Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+flatten (Flatten)                   (None, 784)                     0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 256)                     200960      
+________________________________________________________________________________
+dense (Dense)                       (None, 10)                      2570        
+================================================================================
+Total params: 203,530
+Trainable params: 203,530
+Non-trainable params: 0
+________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x000002879434A518>",9.99999974737875e-05,"build_model.R",2024-12-23 17:00:00.87195,2024-12-23 17:00:49.16634,TRUE,"
+> library(keras)
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001)
++ )
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_flatten(input_shape = c(28, 28, 1)) %>%
++     layer_dense(units =  .... [TRUNCATED] 
+
+> model <- build_model()
+
+> history <- model %>% fit(
++   x_train, y_train,
++   epochs = 10,
++   validation_data = list(x_val, y_val)
++ )","runs/2024-12-23T17-00-00Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T16-59-20Z",0.1091,0.9698,0.1153,0.9656,128,1e-04,60000,32,10,10,"runs/2024-12-23T16-59-20Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+flatten (Flatten)                   (None, 784)                     0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 128)                     100480      
+________________________________________________________________________________
+dense (Dense)                       (None, 10)                      1290        
+================================================================================
+Total params: 101,770
+Trainable params: 101,770
+Non-trainable params: 0
+________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x0000028791CF7EF0>",9.99999974737875e-05,"build_model.R",2024-12-23 16:59:20.85975,2024-12-23 17:00:00.66188,TRUE,"
+> library(keras)
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001)
++ )
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_flatten(input_shape = c(28, 28, 1)) %>%
++     layer_dense(units =  .... [TRUNCATED] 
+
+> model <- build_model()
+
+> history <- model %>% fit(
++   x_train, y_train,
++   epochs = 10,
++   validation_data = list(x_val, y_val)
++ )","runs/2024-12-23T16-59-20Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T16-58-41Z",0.1483,0.9586,0.1477,0.9557,64,1e-04,60000,32,10,10,"runs/2024-12-23T16-58-41Z/tfruns.d/metrics.json","Model: ""sequential""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+flatten (Flatten)                   (None, 784)                     0           
+________________________________________________________________________________
+dense_1 (Dense)                     (None, 64)                      50240       
+________________________________________________________________________________
+dense (Dense)                       (None, 10)                      650         
+================================================================================
+Total params: 50,890
+Trainable params: 50,890
+Non-trainable params: 0
+________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x00000287906A8208>",9.99999974737875e-05,"build_model.R",2024-12-23 16:58:41.95597,2024-12-23 16:59:20.68651,TRUE,"
+> library(keras)
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001)
++ )
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_flatten(input_shape = c(28, 28, 1)) %>%
++     layer_dense(units =  .... [TRUNCATED] 
+
+> model <- build_model()
+
+> history <- model %>% fit(
++   x_train, y_train,
++   epochs = 10,
++   validation_data = list(x_val, y_val)
++ )","runs/2024-12-23T16-58-41Z/tfruns.d/source.tar.gz","local","training"
+"runs/2024-12-23T16-58-02Z",0.2112,0.9409,0.2094,0.9401,32,1e-04,60000,32,10,10,"runs/2024-12-23T16-58-02Z/tfruns.d/metrics.json","Model: ""sequential_4""
+________________________________________________________________________________
+Layer (type)                        Output Shape                    Param #     
+================================================================================
+flatten_2 (Flatten)                 (None, 784)                     0           
+________________________________________________________________________________
+dense_11 (Dense)                    (None, 32)                      25120       
+________________________________________________________________________________
+dense_10 (Dense)                    (None, 10)                      330         
+================================================================================
+Total params: 25,450
+Trainable params: 25,450
+Non-trainable params: 0
+________________________________________________________________________________","sparse_categorical_crossentropy","<tensorflow.python.keras.optimizer_v2.adam.Adam object at 0x0000028788ACD438>",9.99999974737875e-05,"build_model.R",2024-12-23 16:58:03.7033,2024-12-23 16:58:41.60728,TRUE,"
+> library(keras)
+
+> FLAGS <- flags(
++   flag_integer(""units"", 128),
++   flag_numeric(""learning_rate"", 0.001)
++ )
+
+> build_model <- function() {
++   model <- keras_model_sequential() %>%
++     layer_flatten(input_shape = c(28, 28, 1)) %>%
++     layer_dense(units =  .... [TRUNCATED] 
+
+> model <- build_model()
+
+> history <- model %>% fit(
++   x_train, y_train,
++   epochs = 10,
++   validation_data = list(x_val, y_val)
++ )","runs/2024-12-23T16-58-02Z/tfruns.d/source.tar.gz","local","training"
