@@ -221,11 +221,11 @@ runs <- tuning_run(
     units = c(26, 50),
     learning_rate = c(1e-4, 1e-3, 1e-2),
     activation = c("relu", "tanh", "sigmoid"),
-    epochs = c(10, 20, 30)
+    epochs = c(100, 2000)
   )
 )
 
 ###########################################################################
 
 # save the final output
-write.csv(runs, file = "tuning_results_2.csv", row.names = FALSE)
+write.csv(runs, file = "tuning_results_3.csv", row.names = FALSE)
