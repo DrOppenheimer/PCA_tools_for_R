@@ -26,9 +26,9 @@ calculate_pco <- function(
      This script will perform a PCoA analysis on the inputdata
      using the selected distance metric.  Output always produces a
      *.PCoA file that has the normalized eigenvalues (top n lines)
-     and eigenvectors (bottom n x m matris, n lines) where n is the
+     and eigenvectors (bottom n x m matrix, n lines) where n is the
      number of variables (e.g.subsystems), and m the number of
-     samples. You can also choose to produce *.DIST files that contain
+     samples. You can also choose to produce *.DIST file that contain
      the distance matrix used to generate the PCoA.
 
      USAGE: calculate_pco(
