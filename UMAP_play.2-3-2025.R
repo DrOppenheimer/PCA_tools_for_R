@@ -141,12 +141,19 @@ total_eigenvalues <- sum(my_pcoa$eigen_values)
 variance_explained <- (my_pcoa$eigen_values / total_eigenvalues) * 100
 variance_first_ten <- sum(variance_explained[1:10]) 
 
-# Apply UMAP
+# Apply UMAP - for 3d
 umap_result <- umap(pcoa_components, n_components = 3)
-
-# Convert to data frame for plotting
+# Convert to data frame for plotting 3d
 umap_df <- as.data.frame(umap_result$layout)
 colnames(umap_df) <- c("UMAP1", "UMAP2", "UMAP3")
+
+
+## Apply UMAP - for 2d
+#umap_result <- umap(pcoa_components, n_components = 2)
+## Convert to data frame for plotting 2d
+#umap_df <- as.data.frame(umap_result$layout)
+#colnames(umap_df) <- c("UMAP1", "UMAP2")
+
 
 
 
@@ -269,10 +276,43 @@ plot
 
 my_df <- cbind(metadata_column, umap_df)
 
-# Define custom legend text and colors
+# Extract the unique categories
 #legend_labels <- c("Alpha", "Beta", "Gamma")  # Custom legend text
 #legend_colors <- c("red", "blue", "green")    # Custom legend colors
 categories <- unique(my_df$metadata_column)  # Extract unique categories
+
+
+# generate a suitable color list
+# Install and load the RColorBrewer package
+install.packages("RColorBrewer")
+library(RColorBrewer)
+
+# Display all available color palettes
+display.brewer.all()
+
+# Choose a high-contrast palette and create a list of 16 colors
+# Install and load the RColorBrewer package
+install.packages("RColorBrewer")
+library(RColorBrewer)
+
+# Combine colors from different palettes to create a high-contrast list of 16 colors
+custom_colors <- c(brewer.pal(8, "Dark2"), brewer.pal(8, "Set2"))
+
+# Print the list of custom colors
+print(custom_colors)
+
+# Or this way 
+# Get colors for selected column
+my_colors <- create_colors(metadata_column)
+
+
+# Print the list of colors
+print(colors)
+
+
+colors
+
+
 
 # Create an empty plot
 fig <- plot_ly()
@@ -286,7 +326,7 @@ for (i in seq_along(categories)) {
       z = cat_data$UMAP3, 
       type = "scatter3d", 
       mode = "markers",
-      marker = list(color = my_colors$legColors[i], size = 6),  # Custom color
+      marker = list(color = custom_colors[i], size = 10),  # Custom color
       name = legend_labels[i]  # Custom legend text
     )
 }
@@ -302,6 +342,78 @@ fig <- fig %>%
   )
 
 fig
+
+########################################
+########################################
+
+
+## 2d UMAP
+## Apply UMAP - for 2d
+umap_result <- umap(pcoa_components, n_components = 2)
+## Convert to data frame for plotting 2d
+umap_df <- as.data.frame(umap_result$layout)
+colnames(umap_df) <- c("UMAP1", "UMAP2")
+
+my_df <- cbind(metadata_column, umap_df)
+
+categories <- unique(my_df$metadata_column)  # Extract unique categories
+
+fig <- plot_ly()
+# Add each category as a separate trace with custom legend name and color
+for (i in seq_along(categories)) {
+  cat_data <- my_df[my_df$metadata_column == categories[i], ]  # Filter category data
+  fig <- fig %>%
+    add_trace(
+      x = cat_data$UMAP1, 
+      y = cat_data$UMAP2, 
+      #z = cat_data$UMAP3, 
+      type = "scatter", # type = "scatter3d", 
+      mode = "markers",
+      #marker = list(color = custom_colors[i], size = 10),  # Custom color
+      marker = list(color = my_colors$legColors[i], size = 10),  # Custom color
+      name = legend_labels[i]  # Custom legend text
+    )
+}
+
+# Customize layout
+fig <- fig %>%
+  layout(
+    title = "Custom Legend in 3D Plot",
+    scene = list(xaxis = list(title = "UMAP1"), 
+                 yaxis = list(title = "UMAP2")), 
+    legend = list(title = list(text = "Test Legend"))
+  )
+
+fig
+
+
+# Plotted in ggplot
+library("ggplot2")
+# Visualize the UMAP result using ggplot2
+ggplot(umap_df, aes(x = UMAP1, y = UMAP2, color = metadata_column)) +
+#ggplot(umap_df, aes(x = UMAP1, y = UMAP2)) +
+  geom_point() +
+  labs(title = "UMAP Visualization", x = "UMAP 1", y = "UMAP 2") +
+  theme_minimal()
+
+
+
+
+########################################
+########################################
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
