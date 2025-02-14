@@ -236,6 +236,11 @@ getColorTable <- function(col) {
 my_colors <- create_colors(metadata_column)
 #return(my_data.color, column_levels, color_levels)
 
+
+
+########################################
+########################################
+### Plot without legend
 # Plot UMAP result in 3D using plotly
 plot <- plot_ly(umap_df, 
                 x = ~UMAP1, 
@@ -253,6 +258,163 @@ plot <- plot_ly(umap_df,
          #showlegend = FALSE
          
 plot
+
+
+########################################
+########################################
+### Plot with legend play
+
+
+# create a data frame with a category axis
+
+my_df <- cbind(metadata_column, umap_df)
+
+# Define custom legend text and colors
+#legend_labels <- c("Alpha", "Beta", "Gamma")  # Custom legend text
+#legend_colors <- c("red", "blue", "green")    # Custom legend colors
+categories <- unique(my_df$metadata_column)  # Extract unique categories
+
+# Create an empty plot
+fig <- plot_ly()
+# Add each category as a separate trace with custom legend name and color
+for (i in seq_along(categories)) {
+  cat_data <- my_df[my_df$metadata_column == categories[i], ]  # Filter category data
+  fig <- fig %>%
+    add_trace(
+      x = cat_data$UMAP1, 
+      y = cat_data$UMAP2, 
+      z = cat_data$UMAP3, 
+      type = "scatter3d", 
+      mode = "markers",
+      marker = list(color = my_colors$legColors[i], size = 6),  # Custom color
+      name = legend_labels[i]  # Custom legend text
+    )
+}
+
+# Customize layout
+fig <- fig %>%
+  layout(
+    title = "Custom Legend in 3D Plot",
+    scene = list(xaxis = list(title = "UMAP1"), 
+                 yaxis = list(title = "UMAP2"), 
+                 zaxis = list(title = "UMAP3")),
+    legend = list(title = list(text = "Test Legend"))
+  )
+
+fig
+
+
+
+
+
+
+
+# Define custom legend text and colors
+legend_labels <- c("Alpha", "Beta", "Gamma")  # Custom legend text
+legend_colors <- c("red", "blue", "green")    # Custom legend colors
+categories <- unique(df$category)  # Extract unique categories
+
+# Create an empty plot
+fig <- plot_ly()
+
+# Add each category as a separate trace with custom legend name and color
+for (i in seq_along(categories)) {
+  cat_data <- df[df$category == categories[i], ]  # Filter category data
+  fig <- fig %>%
+    add_trace(
+      x = cat_data$x, 
+      y = cat_data$y, 
+      z = cat_data$z, 
+      type = "scatter3d", 
+      mode = "markers",
+      marker = list(color = legend_colors[i], size = 6),  # Custom color
+      name = legend_labels[i]  # Custom legend text
+    )
+}
+
+# Customize layout
+fig <- fig %>%
+  layout(
+    title = "Custom Legend in 3D Plot",
+    scene = list(xaxis = list(title = "X"), 
+                 yaxis = list(title = "Y"), 
+                 zaxis = list(title = "Z")),
+    legend = list(title = list(text = "Legend Title"))
+  )
+
+fig
+
+
+
+
+
+
+
+########################################
+########################################
+
+library(plotly)
+
+# Sample data
+df <- data.frame(
+  category = c("A", "B", "C", "A", "B", "C"),
+  x = c(1, 2, 3, 4, 5, 6),
+  y = c(3, 2, 4, 5, 6, 7),
+  z = c(7, 8, 5, 4, 3, 6)
+)
+
+# Define custom legend text and colors
+legend_labels <- c("Alpha", "Beta", "Gamma")  # Custom legend text
+legend_colors <- c("red", "blue", "green")    # Custom legend colors
+categories <- unique(df$category)  # Extract unique categories
+
+# Create an empty plot
+fig <- plot_ly()
+
+# Add each category as a separate trace with custom legend name and color
+for (i in seq_along(categories)) {
+  cat_data <- df[df$category == categories[i], ]  # Filter category data
+  fig <- fig %>%
+    add_trace(
+      x = cat_data$x, 
+      y = cat_data$y, 
+      z = cat_data$z, 
+      type = "scatter3d", 
+      mode = "markers",
+      marker = list(color = legend_colors[i], size = 6),  # Custom color
+      name = legend_labels[i]  # Custom legend text
+    )
+}
+
+# Customize layout
+fig <- fig %>%
+  layout(
+    title = "Custom Legend in 3D Plot",
+    scene = list(xaxis = list(title = "X"), 
+                 yaxis = list(title = "Y"), 
+                 zaxis = list(title = "Z")),
+    legend = list(title = list(text = "Legend Title"))
+  )
+
+fig
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+########################################
+########################################
 
 
 kaleido(plot, file="test_plot.png")
