@@ -141,11 +141,47 @@ total_eigenvalues <- sum(my_pcoa$eigen_values)
 variance_explained <- (my_pcoa$eigen_values / total_eigenvalues) * 100
 variance_first_ten <- sum(variance_explained[1:10]) 
 
-# Apply UMAP - for 3d
+## Apply UMAP - for 3d
+# umap_result <- umap(pcoa_components, n_components = 3, n_neighbors = 16) # default n_neighbors is 15
 umap_result <- umap(pcoa_components, n_components = 3)
-# Convert to data frame for plotting 3d
+## Convert to data frame for plotting 3d
 umap_df <- as.data.frame(umap_result$layout)
 colnames(umap_df) <- c("UMAP1", "UMAP2", "UMAP3")
+
+## Additional config for umap function
+# umap configuration parameters
+# n_neighbors: 15
+# n_components: 2
+# metric: euclidean
+# n_epochs: 200
+# input: data
+# init: spectral
+# min_dist: 0.1
+# set_op_mix_ratio: 1
+# local_connectivity: 1
+# bandwidth: 1
+# alpha: 1
+# gamma: 1
+# negative_sample_rate: 5
+# a: NA
+# b: NA
+# spread: 1
+# random_state: NA
+# transform_state: NA
+# knn: NA
+# knn_repeats: 1
+# verbose: FALSE
+# umap_learn_args: NA
+# # Update the UMAP configuration to set n_neighbors to a value less than the number of items
+# config <- umap.defaults
+# config$n_neighbors <- 5
+# 
+# # Perform UMAP using the distance matrix and the updated configuration
+# umap_result <- umap(distance_matrix, config = config)
+
+
+
+
 
 
 ## Apply UMAP - for 2d
