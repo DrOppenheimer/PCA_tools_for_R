@@ -1,41 +1,13 @@
-# WORKFLOW ----------------------------------------------------------------
 
 # load necessary packages 
 library(plotly)
 library(scatterplot3d)
 
 # set the working directory to the one that has the PCoA and the metadata
-setwd("~/Documents/GitHub/PCA_tools_for_R/")
+# setwd("~/Documents/GitHub/PCA_tools_for_R/")
 
-# import the calculated PCoA
-my_test_pcoa <- load_pcoa_data("HMP.Jumpstart.DESeq_normed.euclidean.PCoA")
-
-# import metadata
-my_metadata <- load_metadata("HMP_jumpstart_metadata.txt")
-
-# select a single column of metadata for color generation
-column_name = "env_package.data.body_site"
-#column_name = "mixs.seq_method"
-#column_name = "library.data.seq_center"
-metadata_column = metadata_matrix[,column_name, drop=FALSE]
-# generate colors for selected column
-metadata_colors <- create_colors(metadata_column)
-
-# generate the interactive 3d plot
-plot_interactive_colored_3d_pcoa(
-  pcoa_data_file = "HMP.Jumpstart.DESeq_normed.euclidean.PCoA", #my_test_pcoa,
-  selected_eigen_vectors = c(1,2,3),
-  pcoa_metadata_file = "HMP_jumpstart_metadata.txt",
-  metadata_column = "env_package.data.body_site"#metadata_colors
-)
-
-# iterate through the metadata creating a static 3d plot for each metadata column
-plot_static_colored_3d_pcoas(
-  pcoa_filename = "HMP.Jumpstart.DESeq_normed.euclidean.PCoA",
-  selected_eigen_vectors = c(1,2,3),
-  metadata_filename = "HMP_jumpstart_metadata.txt",
-  debug = TRUE
-)
+# source file with functions (should be this file)
+source("./render_calculated_pcoa.r")
 
 # FUNCTIONS ---------------------------------------------------------------
 # FUNCTIONS ---------------------------------------------------------------
@@ -140,7 +112,28 @@ create_colors <- function(metadata_column, color_mode = "auto"){ # function to
   return(my_data.color)
 }
 
+col.wheel <- function(num_col, my_cex=0.75) {
+  cols <- rainbow(num_col)
+  col_names <- vector(mode="list", length=num_col)
+  for (i in 1:num_col){
+    col_names[i] <- getColorTable(cols[i])
+  }
+  cols
+}
 
+getColorTable <- function(col) {
+  rgb <- col2rgb(col);
+  col <- rgb2col(rgb);
+  sort(unique(col))
+}
+
+rgb2col <- function(rgb) {
+  rgb <- as.integer(rgb)
+  class(rgb) <- "hexmode"
+  rgb <- as.character(rgb)
+  rgb <- matrix(rgb, nrow=3)
+  paste("#", apply(rgb, MARGIN=2, FUN=paste, collapse=""), sep="")
+}
 ## ######################
 ## # SUB(4): FUNCTION TO GENERATE THE INTERACTIVE 3D PLOT 
 ## ######################
@@ -256,6 +249,37 @@ plot_static_colored_3d_pcoas <- function(
 #             ")",
 #             sep=""),
 
+# WORKFLOW ----------------------------------------------------------------
+
+# import the calculated PCoA
+my_test_pcoa <- load_pcoa_data("HMP.Jumpstart.DESeq_normed.euclidean.PCoA")
+
+# import metadata
+my_metadata <- load_metadata("HMP_jumpstart_metadata.txt")
+
+# select a single column of metadata for color generation
+column_name = "env_package.data.body_site"
+#column_name = "mixs.seq_method"
+#column_name = "library.data.seq_center"
+metadata_column = metadata_matrix[,column_name, drop=FALSE]
+# generate colors for selected column
+metadata_colors <- create_colors(metadata_column)
+
+# generate the interactive 3d plot
+plot_interactive_colored_3d_pcoa(
+  pcoa_data_file = "HMP.Jumpstart.DESeq_normed.euclidean.PCoA", #my_test_pcoa,
+  selected_eigen_vectors = c(1,2,3),
+  pcoa_metadata_file = "HMP_jumpstart_metadata.txt",
+  metadata_column = "env_package.data.body_site"#metadata_colors
+)
+
+# iterate through the metadata creating a static 3d plot for each metadata column
+plot_static_colored_3d_pcoas(
+  pcoa_filename = "HMP.Jumpstart.DESeq_normed.euclidean.PCoA",
+  selected_eigen_vectors = c(1,2,3),
+  metadata_filename = "HMP_jumpstart_metadata.txt",
+  debug = TRUE
+)
 
 
 
